@@ -12,7 +12,7 @@ export default defineConfig((args) => {
       build: {
          lib: {
             entry: resolve("./src/index.ts"),
-            name: "Simphy",
+            name: "dsajs",
             fileName: (format, name) => {
                if (args.mode == "modules") {
                   return `${name}.js`;
@@ -26,7 +26,7 @@ export default defineConfig((args) => {
       },
       resolve: {
          alias: {
-            simphy: resolve("./src"),
+            "@": resolve("./src"),
          },
       },
       plugins: [dts({ outDir: "dist/types" })],
