@@ -15,7 +15,7 @@ export class Deque<T> extends Queue<T> {
    }
 
    /**
-    * Removes and returns the element at the front of the deque.
+    * Removes and returns the element at the back of the deque.
     * @returns The element at the front of the deque.
     */
    removeBack(): T | null {
