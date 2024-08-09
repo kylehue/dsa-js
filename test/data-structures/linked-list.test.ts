@@ -95,6 +95,12 @@ describe("LinkedList", () => {
       list.clear();
       expect(list.toArray()).toEqual([]);
    });
+
+   it("should create linked list from an array correctly", () => {
+      const array = [1, 2, 3];
+      const linkedList = LinkedList.fromArray(array);
+      expect(linkedList.toArray()).toEqual(array);
+   });
 });
 
 describe("LinkedList - Empty", () => {

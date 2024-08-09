@@ -197,6 +197,20 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
       return this.tail;
    }
 
+   /**
+    * Creates a linked list from an array of values.
+    *
+    * @param array The array of values to convert into a linked list.
+    * @returns A new linked list containing the values from the array.
+    */
+   static fromArray<T>(array: T[]): LinkedList<T> {
+      const list = new LinkedList<T>();
+      for (const value of array) {
+         list.addNode(value);
+      }
+      return list;
+   }
+
    [Symbol.iterator](): Iterator<ListNode<T>> {
       let current = this.head;
       return {
