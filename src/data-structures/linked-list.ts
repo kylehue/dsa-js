@@ -22,6 +22,7 @@ class ListNode<T> {
 export class LinkedList<T> implements Iterable<ListNode<T>> {
    private head: ListNode<T> | null = null;
    private tail: ListNode<T> | null = null;
+   private _size: number = 0;
 
    /**
     * Adds a node with the specified value to the end of the list.
@@ -40,6 +41,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          changePrev(newNode, this.tail!);
          this.tail = newNode;
       }
+
+      this._size++;
 
       return newNode;
    }
@@ -74,6 +77,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
             changeNext(node.prev, node.next);
          }
       }
+      
+      this._size--;
    }
 
    /**
@@ -94,6 +99,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          this.tail = newNode;
       }
       changeNext(afterNode, newNode);
+
+      this._size++;
 
       return newNode;
    }
@@ -122,6 +129,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          changeNext(newNode, beforeNode);
          changePrev(beforeNode, newNode);
       }
+
+      this._size++;
 
       return newNode;
    }
@@ -162,6 +171,21 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    clear(): void {
       this.head = null;
       this.tail = null;
+      this._size = 0;
+   }
+
+   /**
+    * Returns the number of nodes in the list.
+    */
+   size(): number {
+      return this._size;
+   }
+
+   /**
+    * Returns whether the list is empty.
+    */
+   isEmpty(): boolean {
+      return this._size === 0;
    }
 
    /**

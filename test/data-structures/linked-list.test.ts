@@ -101,6 +101,17 @@ describe("LinkedList", () => {
       const linkedList = LinkedList.fromArray(array);
       expect(linkedList.toArray()).toEqual(array);
    });
+
+   it("should properly return size of the linked list", () => {
+      expect(list.size()).toBe(3);
+      expect(list.isEmpty()).toBe(false);
+      list.removeNode(list.getHead()!);
+      expect(list.size()).toBe(2);
+      expect(list.isEmpty()).toBe(false);
+      list.clear();
+      expect(list.size()).toBe(0);
+      expect(list.isEmpty()).toBe(true);
+   });
 });
 
 describe("LinkedList - Empty", () => {
