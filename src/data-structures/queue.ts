@@ -1,7 +1,7 @@
 import { LinkedList } from "./linked-list";
 
 export class Queue<T> {
-   private _list: LinkedList<T> = new LinkedList();
+   protected _list: LinkedList<T> = new LinkedList();
 
    /**
     * Adds a value to the end of the queue.
