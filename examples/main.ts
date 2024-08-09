@@ -1,0 +1,22 @@
+import { PriorityQueue, Queue, Deque, Trie } from "../src/index";
+
+const pq = new PriorityQueue<number>();
+for (let i = 0; i < 100; i++) {
+   pq.enqueue(~~(Math.random() * 100));
+}
+console.log(pq.toArray());
+
+const q = new Deque<number>();
+for (let i = 0; i < 5; i++) {
+   q.enqueue(~~(Math.random() * 100));
+}
+for (const value of q) {
+   console.log(value);
+}
+
+const trie = new Trie();
+trie.insert("apple");
+trie.insert("app");
+trie.insert("apricot");
+console.log(trie.delete("app"));
+console.log(trie.autocomplete("app"));
