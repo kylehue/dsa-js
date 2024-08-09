@@ -6,7 +6,7 @@ export class Deque<T> extends Queue<T> {
     * @param element The element to add to the deque.
     */
    addFront(element: T): void {
-      let head = this._list.getHead();
+      let head = this._list.head();
       if (head) {
          this._list.addNodeBefore(head, element);
       } else {
@@ -19,7 +19,7 @@ export class Deque<T> extends Queue<T> {
     * @returns The element at the front of the deque.
     */
    removeBack(): T | null {
-      let tail = this._list.getTail();
+      let tail = this._list.tail();
       if (tail) {
          let value = tail.value;
          this._list.removeNode(tail);

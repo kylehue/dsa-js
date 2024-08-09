@@ -19,7 +19,7 @@ export class Queue<T> {
     * is empty.
     */
    dequeue(): T | null {
-      const head = this._list.getHead();
+      const head = this._list.head();
       if (head) {
          this._list.removeNode(head);
          return head.value;
@@ -35,7 +35,7 @@ export class Queue<T> {
     * is empty.
     */
    front(): T | null {
-      const head = this._list.getHead();
+      const head = this._list.head();
       return head ? head.value : null;
    }
 
@@ -46,7 +46,7 @@ export class Queue<T> {
     * is empty.
     */
    back(): T | null {
-      const tail = this._list.getTail();
+      const tail = this._list.tail();
       return tail ? tail.value : null;
    }
 
@@ -105,7 +105,7 @@ export class Queue<T> {
    }
 
    [Symbol.iterator](): Iterator<T> {
-      let current = this._list.getHead();
+      let current = this._list.head();
       return {
          next(): IteratorResult<T> {
             if (current) {

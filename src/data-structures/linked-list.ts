@@ -20,8 +20,8 @@ class ListNode<T> {
  * Represents a doubly linked list.
  */
 export class LinkedList<T> implements Iterable<ListNode<T>> {
-   private head: ListNode<T> | null = null;
-   private tail: ListNode<T> | null = null;
+   private _head: ListNode<T> | null = null;
+   private _tail: ListNode<T> | null = null;
    private _size: number = 0;
 
    /**
@@ -33,13 +33,13 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     */
    addNode(value: T) {
       const newNode = new ListNode(value);
-      if (!this.head) {
-         this.head = newNode;
-         this.tail = newNode;
+      if (!this._head) {
+         this._head = newNode;
+         this._tail = newNode;
       } else {
-         changeNext(this.tail!, newNode);
-         changePrev(newNode, this.tail!);
-         this.tail = newNode;
+         changeNext(this._tail!, newNode);
+         changePrev(newNode, this._tail!);
+         this._tail = newNode;
       }
 
       this._size++;
@@ -53,21 +53,21 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     * @param node The node to remove.
     */
    removeNode(node: ListNode<T>): void {
-      if (this.head === null) return;
+      if (this._head === null) return;
 
-      if (this.head === node) {
-         this.head = this.head.next();
-         if (this.head !== null) {
-            changePrev(this.head, null);
+      if (this._head === node) {
+         this._head = this._head.next();
+         if (this._head !== null) {
+            changePrev(this._head, null);
          } else {
-            this.tail = null;
+            this._tail = null;
          }
-      } else if (this.tail === node) {
-         this.tail = this.tail.prev();
-         if (this.tail !== null) {
-            changeNext(this.tail, null);
+      } else if (this._tail === node) {
+         this._tail = this._tail.prev();
+         if (this._tail !== null) {
+            changeNext(this._tail, null);
          } else {
-            this.head = null;
+            this._head = null;
          }
       } else {
          let next = node.next();
@@ -99,7 +99,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
       if (afterNodeNext) {
          changePrev(afterNodeNext, newNode);
       } else {
-         this.tail = newNode;
+         this._tail = newNode;
       }
       changeNext(afterNode, newNode);
 
@@ -119,10 +119,10 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    addNodeBefore(beforeNode: ListNode<T>, value: T): ListNode<T> {
       const newNode = new ListNode(value);
 
-      if (this.head === beforeNode) {
-         changeNext(newNode, this.head);
-         changePrev(this.head, newNode);
-         this.head = newNode;
+      if (this._head === beforeNode) {
+         changeNext(newNode, this._head);
+         changePrev(this._head, newNode);
+         this._head = newNode;
       } else {
          const prevNode = beforeNode.prev();
          if (prevNode) {
@@ -160,7 +160,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     */
    clone(): LinkedList<T> {
       const cloneList = new LinkedList<T>();
-      let current = this.head;
+      let current = this._head;
       while (current) {
          cloneList.addNode(current.value);
          current = current.next();
@@ -172,8 +172,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     * Removes all nodes from the list.
     */
    clear(): void {
-      this.head = null;
-      this.tail = null;
+      this._head = null;
+      this._tail = null;
       this._size = 0;
    }
 
@@ -198,7 +198,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     */
    toArray(): T[] {
       const result: T[] = [];
-      let current = this.head;
+      let current = this._head;
       while (current) {
          result.push(current.value);
          current = current.next();
@@ -211,8 +211,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The head node or null if the list is empty.
     */
-   getHead(): ListNode<T> | null {
-      return this.head;
+   head(): ListNode<T> | null {
+      return this._head;
    }
 
    /**
@@ -220,8 +220,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The tail node or null if the list is empty.
     */
-   getTail(): ListNode<T> | null {
-      return this.tail;
+   tail(): ListNode<T> | null {
+      return this._tail;
    }
 
    /**
@@ -239,7 +239,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    }
 
    [Symbol.iterator](): Iterator<ListNode<T>> {
-      let current = this.head;
+      let current = this._head;
       return {
          next(): IteratorResult<ListNode<T>> {
             if (current) {
