@@ -7,11 +7,11 @@ class ListNode<T> {
       this.value = value;
    }
 
-   get next(): ListNode<T> | null {
+   next(): ListNode<T> | null {
       return this._next;
    }
 
-   get prev(): ListNode<T> | null {
+   prev(): ListNode<T> | null {
       return this._prev;
    }
 }
@@ -56,28 +56,30 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
       if (this.head === null) return;
 
       if (this.head === node) {
-         this.head = this.head.next;
+         this.head = this.head.next();
          if (this.head !== null) {
             changePrev(this.head, null);
          } else {
             this.tail = null;
          }
       } else if (this.tail === node) {
-         this.tail = this.tail.prev;
+         this.tail = this.tail.prev();
          if (this.tail !== null) {
             changeNext(this.tail, null);
          } else {
             this.head = null;
          }
       } else {
-         if (node.next !== null) {
-            changePrev(node.next, node.prev);
+         let next = node.next();
+         if (next !== null) {
+            changePrev(next, node.prev());
          }
-         if (node.prev !== null) {
-            changeNext(node.prev, node.next);
+         let prev = node.prev();
+         if (prev !== null) {
+            changeNext(prev, node.next());
          }
       }
-      
+
       this._size--;
    }
 
@@ -91,10 +93,11 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     */
    addNodeAfter(afterNode: ListNode<T>, value: T) {
       const newNode = new ListNode(value);
-      changeNext(newNode, afterNode.next);
+      changeNext(newNode, afterNode.next());
       changePrev(newNode, afterNode);
-      if (afterNode.next) {
-         changePrev(afterNode.next, newNode);
+      let afterNodeNext = afterNode.next();
+      if (afterNodeNext) {
+         changePrev(afterNodeNext, newNode);
       } else {
          this.tail = newNode;
       }
@@ -121,7 +124,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          changePrev(this.head, newNode);
          this.head = newNode;
       } else {
-         const prevNode = beforeNode.prev;
+         const prevNode = beforeNode.prev();
          if (prevNode) {
             changeNext(prevNode, newNode);
             changePrev(newNode, prevNode);
@@ -160,7 +163,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
       let current = this.head;
       while (current) {
          cloneList.addNode(current.value);
-         current = current.next;
+         current = current.next();
       }
       return cloneList;
    }
@@ -198,7 +201,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
       let current = this.head;
       while (current) {
          result.push(current.value);
-         current = current.next;
+         current = current.next();
       }
       return result;
    }
@@ -241,7 +244,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          next(): IteratorResult<ListNode<T>> {
             if (current) {
                const value = current;
-               current = current.next;
+               current = current.next();
                return { value, done: false };
             }
             return { value: undefined as any, done: true };

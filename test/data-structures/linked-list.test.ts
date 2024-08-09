@@ -16,8 +16,8 @@ describe("LinkedList", () => {
       const tail = list.getTail();
       expect(head?.value).toBe(1);
       expect(tail?.value).toBe(3);
-      expect(head?.next?.value).toBe(2);
-      expect(tail?.prev?.value).toBe(2);
+      expect(head?.next()?.value).toBe(2);
+      expect(tail?.prev()?.value).toBe(2);
    });
 
    it("should remove the head node correctly", () => {
@@ -29,7 +29,7 @@ describe("LinkedList", () => {
       const tail = list.getTail();
       expect(newHead?.value).toBe(2);
       expect(tail?.value).toBe(3);
-      expect(newHead?.prev).toBe(null);
+      expect(newHead?.prev()).toBe(null);
    });
 
    it("should remove the tail node correctly", () => {
@@ -41,12 +41,12 @@ describe("LinkedList", () => {
       const head = list.getHead();
       expect(newTail?.value).toBe(2);
       expect(head?.value).toBe(1);
-      expect(newTail?.next).toBe(null);
+      expect(newTail?.next()).toBe(null);
    });
 
    it("should remove a middle node correctly", () => {
       const head = list.getHead();
-      const secondNode = head?.next; // Node with value 2
+      const secondNode = head?.next(); // Node with value 2
       if (secondNode) {
          list.removeNode(secondNode);
       }
@@ -54,16 +54,16 @@ describe("LinkedList", () => {
       const tail = list.getTail();
       expect(newHead?.value).toBe(1);
       expect(tail?.value).toBe(3);
-      expect(newHead?.next?.value).toBe(3);
-      expect(tail?.prev?.value).toBe(1);
+      expect(newHead?.next()?.value).toBe(3);
+      expect(tail?.prev()?.value).toBe(1);
    });
 
    it("should add a node after a given node correctly", () => {
       const head = list.getHead();
       const newNode = list.addNodeAfter(head!, 4);
       expect(newNode.value).toBe(4);
-      expect(head?.next?.value).toBe(4);
-      expect(newNode.next?.value).toBe(2);
+      expect(head?.next()?.value).toBe(4);
+      expect(newNode.next()?.value).toBe(2);
       expect(list.getTail()?.value).toBe(3);
    });
 
@@ -71,8 +71,8 @@ describe("LinkedList", () => {
       const tail = list.getTail();
       const newNode = list.addNodeBefore(tail!, 5);
       expect(newNode.value).toBe(5);
-      expect(tail?.prev?.value).toBe(5);
-      expect(newNode.next?.value).toBe(3);
+      expect(tail?.prev()?.value).toBe(5);
+      expect(newNode.next()?.value).toBe(3);
       expect(list.getTail()?.value).toBe(3);
    });
 
@@ -158,9 +158,9 @@ describe("LinkedList - Empty", () => {
       expect(list.getHead()?.value).toBe(1);
       expect(list.getTail()?.value).toBe(3);
 
-      expect(node1.next?.value).toBe(2);
-      expect(node2.next?.value).toBe(3);
-      expect(node3.prev?.value).toBe(2);
+      expect(node1.next()?.value).toBe(2);
+      expect(node2.next()?.value).toBe(3);
+      expect(node3.prev()?.value).toBe(2);
    });
 
    it("should handle cloning an empty list", () => {
@@ -203,8 +203,8 @@ describe("LinkedList - Empty", () => {
       const newNode = list.addNodeAfter(node1, 3);
 
       expect(newNode.value).toBe(3);
-      expect(node1.next?.value).toBe(3);
-      expect(node2.prev?.value).toBe(3);
+      expect(node1.next()?.value).toBe(3);
+      expect(node2.prev()?.value).toBe(3);
       expect(list.getTail()?.value).toBe(2);
    });
 
@@ -214,7 +214,7 @@ describe("LinkedList - Empty", () => {
       const newNode = list.addNodeBefore(node2, 3);
 
       expect(newNode.value).toBe(3);
-      expect(node2.prev?.value).toBe(3);
+      expect(node2.prev()?.value).toBe(3);
       expect(list.getHead()?.value).toBe(1);
       expect(list.getTail()?.value).toBe(2);
    });
