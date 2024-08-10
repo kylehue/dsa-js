@@ -17,8 +17,6 @@ export class Heap<T> {
 
    /**
     * Returns the number of elements in the heap.
-    *
-    * @returns {number} The number of elements in the heap.
     */
    size(): number {
       return this._heap.length;
@@ -26,8 +24,6 @@ export class Heap<T> {
 
    /**
     * Returns true if the heap is empty, false otherwise.
-    *
-    * @returns {boolean} Returns true if the heap is empty, false otherwise.
     */
    isEmpty(): boolean {
       return this.size() === 0;
@@ -80,8 +76,6 @@ export class Heap<T> {
 
    /**
     * Clones the heap.
-    *
-    * @returns {Heap<T>} The cloned heap.
     */
    clone(): Heap<T> {
       const clonedHeap = new Heap<T>(this._comparator);
@@ -91,8 +85,6 @@ export class Heap<T> {
 
    /**
     * Converts the heap to an array.
-    *
-    * @returns {T[]} The array.
     */
    toArray(): T[] {
       const clone = this.clone();
