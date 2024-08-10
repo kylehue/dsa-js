@@ -2,7 +2,7 @@ import { Comparator } from "@/utils/comparator";
 import { Heap } from "./heap";
 
 export class PriorityQueue<T> {
-   private readonly _heap: Heap<T>;
+   private _heap: Heap<T>;
 
    constructor(comparator?: Comparator<T>) {
       this._heap = new Heap(comparator);
@@ -70,5 +70,20 @@ export class PriorityQueue<T> {
     */
    clone() {
       return this._heap.clone();
+   }
+
+   /**
+    * Builds a priority queue from the given array.
+    *
+    * @param {T[]} array The array to build the priority queue from.
+    * @param {Comparator<T>} comparator The comparator function to use.
+    * (Optional)
+    *
+    * @returns {PriorityQueue<T>} The priority queue built from the given array.
+    */
+   static fromArray<T>(array: T[], comparator?: Comparator<T>) {
+      const priorityQueue = new PriorityQueue(comparator);
+      priorityQueue._heap = Heap.fromArray(array);
+      return priorityQueue;
    }
 }
