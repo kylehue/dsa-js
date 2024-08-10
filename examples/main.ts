@@ -1,4 +1,4 @@
-import { PriorityQueue, Queue, Deque, Trie } from "../src/index";
+import { PriorityQueue, Queue, Deque, Trie, DisjointSet } from "../src/index";
 
 const pq = new PriorityQueue<number>();
 for (let i = 0; i < 100; i++) {
@@ -20,3 +20,7 @@ trie.insert("app");
 trie.insert("apricot");
 console.log(trie.delete("app"));
 console.log(trie.autocomplete("app"));
+
+const ds = new DisjointSet<string>();
+ds.union("a", "b");
+console.log(ds.find("a"));

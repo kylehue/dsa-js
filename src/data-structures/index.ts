@@ -4,3 +4,4 @@ export * from "./queue";
 export * from "./deque";
 export * from "./linked-list";
 export * from "./trie";
+export * from "./disjoint-set";
