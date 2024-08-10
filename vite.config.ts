@@ -16,11 +16,13 @@ export default defineConfig((args) => {
             fileName: (format, name) => {
                if (args.mode == "modules") {
                   return `${name}.js`;
+               } else if (format === "iife") {
+                  return `iife/${name}.js`;
                } else {
                   return `umd/${name}.js`;
                }
             },
-            formats: ["umd"],
+            formats: ["umd", "iife"],
          },
          sourcemap: true,
       },
