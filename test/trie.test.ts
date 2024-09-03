@@ -1,4 +1,4 @@
-import { Trie } from "../../src/data-structures/trie";
+import { Trie } from "../src";
 import { describe, it, expect } from "vitest";
 
 describe("Trie", () => {

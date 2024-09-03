@@ -1,4 +1,4 @@
-import { DisjointSet } from "../../src/data-structures/disjoint-set";
+import { DisjointSet } from "../src";
 import { describe, beforeEach, test, expect } from "vitest";
 
 describe("DisjointSet", () => {

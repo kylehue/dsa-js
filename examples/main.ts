@@ -1,8 +1,8 @@
-import { PriorityQueue, Queue, Deque, Trie, DisjointSet } from "../src/index";
+import { Heap, Queue, Deque, Trie, DisjointSet } from "../src/index";
 
-const pq = new PriorityQueue<number>();
+const pq = new Heap<number>();
 for (let i = 0; i < 100; i++) {
-   pq.enqueue(~~(Math.random() * 100));
+   pq.push(~~(Math.random() * 100));
 }
 console.log(pq.toArray());
 

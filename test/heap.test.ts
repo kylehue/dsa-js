@@ -1,4 +1,4 @@
-import { Heap } from "../../src/data-structures/heap";
+import { Heap } from "../src";
 import { describe, beforeEach, it, expect } from "vitest";
 
 describe("Heap", () => {

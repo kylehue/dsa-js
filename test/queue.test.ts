@@ -1,4 +1,4 @@
-import { Queue } from "../../src/data-structures/queue";
+import { Queue } from "../src";
 import { describe, beforeEach, test, expect } from "vitest";
 
 describe("Queue", () => {

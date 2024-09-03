@@ -1,4 +1,4 @@
-import { Deque } from "../../src/data-structures/deque";
+import { Deque } from "../src";
 import { describe, beforeEach, test, expect } from "vitest";
 
 describe("Deque", () => {
