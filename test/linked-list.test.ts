@@ -73,7 +73,7 @@ describe("LinkedList", () => {
 
    it("should add a node after a given node correctly", () => {
       const head = list.head();
-      const newNode = list.appendAfter(head!, 4);
+      const newNode = list.insertAfter(head!, 4);
       expect(newNode.value).toBe(4);
       expect(head?.next()?.value).toBe(4);
       expect(newNode.next()?.value).toBe(2);
@@ -82,7 +82,7 @@ describe("LinkedList", () => {
 
    it("should add a node before a given node correctly", () => {
       const tail = list.tail();
-      const newNode = list.appendBefore(tail!, 5);
+      const newNode = list.insertBefore(tail!, 5);
       expect(newNode.value).toBe(5);
       expect(tail?.prev()?.value).toBe(5);
       expect(newNode.next()?.value).toBe(3);
@@ -154,11 +154,11 @@ describe("LinkedList - Empty", () => {
       const node1 = list.append(1); // Head
       const node2 = list.append(2); // Tail
 
-      const newNodeBeforeHead = list.appendBefore(node1, 0);
+      const newNodeBeforeHead = list.insertBefore(node1, 0);
       expect(newNodeBeforeHead.value).toBe(0);
       expect(list.head()?.value).toBe(0);
 
-      const newNodeAfterTail = list.appendAfter(node2, 3);
+      const newNodeAfterTail = list.insertAfter(node2, 3);
       expect(newNodeAfterTail.value).toBe(3);
       expect(list.tail()?.value).toBe(3);
    });
@@ -213,7 +213,7 @@ describe("LinkedList - Empty", () => {
    it("should handle adding a node after a node with null next", () => {
       const node1 = list.append(1);
       const node2 = list.append(2);
-      const newNode = list.appendAfter(node1, 3);
+      const newNode = list.insertAfter(node1, 3);
 
       expect(newNode.value).toBe(3);
       expect(node1.next()?.value).toBe(3);
@@ -224,7 +224,7 @@ describe("LinkedList - Empty", () => {
    it("should handle adding a node before a node with null prev", () => {
       const node1 = list.append(1);
       const node2 = list.append(2);
-      const newNode = list.appendBefore(node2, 3);
+      const newNode = list.insertBefore(node2, 3);
 
       expect(newNode.value).toBe(3);
       expect(node2.prev()?.value).toBe(3);

@@ -52,6 +52,21 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    }
 
    /**
+    * Adds a node with the specified value to the end of the list.
+    *
+    * @param value The value of the node to add.
+    *
+    * @returns The newly added node.
+    */
+   prepend(value: T) {
+      if (this._head) {
+         this.insertBefore(this._head, value);
+      } else {
+         this.append(value);
+      }
+   }
+
+   /**
     * Removes a node from the list.
     *
     * @param node The node to remove.
@@ -97,7 +112,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   appendAfter(afterNode: ListNode<T>, value: T) {
+   insertAfter(afterNode: ListNode<T>, value: T) {
       const newNode = new ListNode(value);
       changeNext(newNode, afterNode.next());
       changePrev(newNode, afterNode);
@@ -122,7 +137,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   appendBefore(beforeNode: ListNode<T>, value: T): ListNode<T> {
+   insertBefore(beforeNode: ListNode<T>, value: T): ListNode<T> {
       const newNode = new ListNode(value);
 
       if (this._head === beforeNode) {

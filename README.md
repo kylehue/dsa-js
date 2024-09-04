@@ -35,14 +35,17 @@ list = LinkedList.fromArray([1, 2, 3]);
 // Adds a node to the end of the list
 let node = list.append(4);
 
+// Adds a node to the start of the list
+let node = list.prepend(4);
+
 // Removes a node from the list
 list.deleteNode(node);
 
 // Adds a node after a specific node
-let newNodeAfter = list.appendAfter(node, 5);
+let newNodeAfter = list.insertAfter(node, 5);
 
 // Adds a node before a specific node
-let newNodeBefore = list.appendBefore(node, 0);
+let newNodeBefore = list.insertBefore(node, 0);
 
 // Finds a node by value
 let foundNode = list.find(3);

@@ -6,12 +6,7 @@ export class Deque<T> extends Queue<T> {
     * @param value The value to add to the front of the queue.
     */
    enqueueFront(value: T): void {
-      let head = this._list.head();
-      if (head) {
-         this._list.appendBefore(head, value);
-      } else {
-         this._list.append(value);
-      }
+      this._list.prepend(value);
    }
 
    /**
