@@ -76,9 +76,6 @@ let tailNode = list.tail();
 for (let node of list) {
    console.log(node.value);
 }
-
-// Create a node
-let node = LinkedList.createNode(5);
 ```
 
 ## Queue

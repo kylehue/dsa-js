@@ -2,6 +2,7 @@ export class ListNode<T> {
    public value: T;
    private readonly _next: ListNode<T> | undefined = undefined;
    private readonly _prev: ListNode<T> | undefined = undefined;
+   private readonly _isDisposed = false;
 
    constructor(value: T) {
       this.value = value;
@@ -14,6 +15,10 @@ export class ListNode<T> {
    prev(): ListNode<T> | undefined {
       return this._prev;
    }
+
+   isDisposed(): boolean {
+      return this._isDisposed;
+   }
 }
 
 /**
@@ -24,10 +29,6 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    private _tail: ListNode<T> | undefined = undefined;
    private _size: number = 0;
 
-   static createNode<T>(value: T): ListNode<T> {
-      return new ListNode(value);
-   }
-
    /**
     * Adds a node with the specified value to the end of the list.
     *
@@ -36,7 +37,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     * @returns The newly added node.
     */
    append(value: T): ListNode<T> {
-      const newNode = LinkedList.createNode(value);
+      const newNode = new ListNode(value);
       if (!this._head) {
          this._head = newNode;
          this._tail = newNode;
@@ -75,6 +76,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     */
    deleteNode(node: ListNode<T>): boolean {
       if (this._head === undefined) return false;
+      if (node.isDisposed()) return false;
 
       if (this._head === node) {
          this._head = this._head.next();
@@ -83,6 +85,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          } else {
             this._tail = undefined;
          }
+         disposeNode(node);
          this._size--;
          return true;
       } else if (this._tail === node) {
@@ -92,6 +95,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          } else {
             this._head = undefined;
          }
+         disposeNode(node);
          this._size--;
          return true;
       } else {
@@ -105,6 +109,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          ) {
             changePrev(next, node.prev());
             changeNext(prev, node.next());
+            disposeNode(node);
             this._size--;
             return true;
          }
@@ -199,6 +204,9 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
 
    /**
     * Removes all nodes from the list.
+    *
+    * Note: For efficiency, this doesn't delete nodes one by one.
+    * Avoid reusing the old nodes to avoid unexpected behaviors.
     */
    clear(): void {
       this._head = undefined;
@@ -295,4 +303,13 @@ function changeNext<T>(node: ListNode<T>, next: ListNode<T> | undefined) {
 function changePrev<T>(node: ListNode<T>, prev: ListNode<T> | undefined) {
    // @ts-ignore
    node._prev = prev;
+}
+
+function disposeNode<T>(node: ListNode<T>) {
+   // @ts-ignore
+   node._isDisposed = true;
+   // @ts-ignore
+   node._prev = undefined;
+   // @ts-ignore
+   node._next = undefined;
 }

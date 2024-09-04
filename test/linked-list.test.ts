@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { LinkedList } from "../src";
+import { ListNode } from "../src/linked-list";
 
 describe("LinkedList", () => {
    let list: LinkedList<number>;
@@ -33,7 +34,7 @@ describe("LinkedList", () => {
    });
 
    it("should only remove nodes that exists in the list", () => {
-      let randomNode = LinkedList.createNode(2);
+      let randomNode = new ListNode(2);
       let deleted = list.deleteNode(randomNode);
       expect(list.size()).toBe(3);
       expect(deleted).toBe(false);
