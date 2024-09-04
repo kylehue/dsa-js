@@ -15,39 +15,35 @@ export class Queue<T> {
    /**
     * Removes and returns the value at the front of the queue.
     *
-    * @returns The value at the front of the queue or null if the queue
+    * @returns The value at the front of the queue or undefined if the queue
     * is empty.
     */
-   dequeue(): T | null {
+   dequeue(): T | void {
       const head = this._list.head();
       if (head) {
          this._list.deleteNode(head);
          return head.value;
       }
-
-      return null;
    }
 
    /**
     * Returns the value at the front of the queue without removing it.
     *
-    * @returns The value at the front of the queue or null if the queue
+    * @returns The value at the front of the queue or undefined if the queue
     * is empty.
     */
-   front(): T | null {
-      const head = this._list.head();
-      return head ? head.value : null;
+   front(): T | void {
+      return this._list.head()?.value;
    }
 
    /**
     * Returns the value at the back of the queue without removing it.
     *
-    * @returns The value at the back of the queue or null if the queue
+    * @returns The value at the back of the queue or undefined if the queue
     * is empty.
     */
-   back(): T | null {
-      const tail = this._list.tail();
-      return tail ? tail.value : null;
+   back(): T | undefined {
+      return this._list.tail()?.value;
    }
 
    /**

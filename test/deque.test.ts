@@ -30,7 +30,7 @@ describe("Deque", () => {
    });
 
    test("should handle removing from an empty deque", () => {
-      expect(deque.dequeueBack()).toBeNull();
+      expect(deque.dequeueBack()).toBeUndefined();
    });
 
    test("should handle adding and removing multiple elements", () => {

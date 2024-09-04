@@ -13,13 +13,12 @@ export class Deque<T> extends Queue<T> {
     * Removes and returns the value at the back of the queue.
     * @returns The value at the front of the queue.
     */
-   dequeueBack(): T | null {
+   dequeueBack(): T | void {
       let tail = this._list.tail();
       if (tail) {
          let value = tail.value;
          this._list.deleteNode(tail);
          return value;
       }
-      return null;
    }
 }

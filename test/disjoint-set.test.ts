@@ -19,7 +19,7 @@ describe("DisjointSet", () => {
       ds.add("B");
       expect(ds.find("A")).toBe("A");
       expect(ds.find("B")).toBe("B");
-      expect(ds.find("C")).toBe(null); // C is not added
+      expect(ds.find("C")).toBe(undefined); // C is not added
    });
 
    test("should return correct representative for new elements", () => {

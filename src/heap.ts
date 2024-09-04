@@ -32,11 +32,11 @@ export class Heap<T> {
    /**
     * Returns the top element of the heap without removing it.
     *
-    * @returns {T | null} Returns the top element of the heap or null if
-    * the heap is empty.
+    * @returns {T | void} Returns the top element of the heap
+    * or undefined if the heap is empty.
     */
-   peek(): T | null {
-      return this.isEmpty() ? null : this._heap[0];
+   peek(): T | void {
+      return this.isEmpty() ? undefined : this._heap[0];
    }
 
    /**
@@ -54,11 +54,11 @@ export class Heap<T> {
    /**
     * Removes the top element from the heap and returns it.
     *
-    * @returns {T | null} The top element of the heap or null if the heap
-    * is empty.
+    * @returns {T | undefined} The top element of the heap or
+    * undefined if the heap is empty.
     */
-   pop(): T | null {
-      if (this.isEmpty()) return null;
+   pop(): T | undefined {
+      if (this.isEmpty()) return;
       if (this.size() === 1) return this._heap.pop() as T;
 
       const removedValue = this._heap[0];

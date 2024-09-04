@@ -24,9 +24,9 @@ export class DisjointSet<T = number> {
     * @returns The representative node of the set, or null if the node
     * is not found.
     */
-   find(node: T): T | null {
+   find(node: T): T | void {
       let parent = this._parentMap.get(node);
-      if (!parent) return null;
+      if (!parent) return;
       if (parent === node) return node;
 
       let root = this.find(parent);

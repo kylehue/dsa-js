@@ -11,7 +11,7 @@ describe("Heap", () => {
    it("should initialize an empty heap", () => {
       expect(heap.size()).toBe(0);
       expect(heap.isEmpty()).toBe(true);
-      expect(heap.peek()).toBeNull();
+      expect(heap.peek()).toBeUndefined();
    });
 
    it("should add elements to the heap", () => {
@@ -37,7 +37,7 @@ describe("Heap", () => {
 
       expect(heap.size()).toBe(0);
       expect(heap.isEmpty()).toBe(true);
-      expect(heap.peek()).toBeNull();
+      expect(heap.peek()).toBeUndefined();
    });
 
    it("should clone the heap", () => {
@@ -78,7 +78,7 @@ describe("Heap", () => {
    });
 
    it("should handle pop on an empty heap", () => {
-      expect(heap.pop()).toBeNull();
+      expect(heap.pop()).toBeUndefined();
       expect(heap.isEmpty()).toBe(true);
    });
 

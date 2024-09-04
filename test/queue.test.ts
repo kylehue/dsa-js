@@ -31,7 +31,7 @@ describe("Queue", () => {
    });
 
    test("should return null when dequeueing from an empty queue", () => {
-      expect(queue.dequeue()).toBeNull();
+      expect(queue.dequeue()).toBeUndefined();
    });
 
    test("should return the correct front and back values", () => {
@@ -49,8 +49,8 @@ describe("Queue", () => {
       queue.clear();
 
       expect(queue.size()).toBe(0);
-      expect(queue.front()).toBeNull();
-      expect(queue.back()).toBeNull();
+      expect(queue.front()).toBeUndefined();
+      expect(queue.back()).toBeUndefined();
    });
 
    test("should clone the queue correctly", () => {

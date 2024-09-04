@@ -1,17 +1,17 @@
-class ListNode<T> {
+export class ListNode<T> {
    public value: T;
-   private readonly _next: ListNode<T> | null = null;
-   private readonly _prev: ListNode<T> | null = null;
+   private readonly _next: ListNode<T> | undefined = undefined;
+   private readonly _prev: ListNode<T> | undefined = undefined;
 
    constructor(value: T) {
       this.value = value;
    }
 
-   next(): ListNode<T> | null {
+   next(): ListNode<T> | undefined {
       return this._next;
    }
 
-   prev(): ListNode<T> | null {
+   prev(): ListNode<T> | undefined {
       return this._prev;
    }
 }
@@ -20,8 +20,8 @@ class ListNode<T> {
  * Represents a doubly linked list.
  */
 export class LinkedList<T> implements Iterable<ListNode<T>> {
-   private _head: ListNode<T> | null = null;
-   private _tail: ListNode<T> | null = null;
+   private _head: ListNode<T> | undefined = undefined;
+   private _tail: ListNode<T> | undefined = undefined;
    private _size: number = 0;
 
    static createNode<T>(value: T): ListNode<T> {
@@ -35,7 +35,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   append(value: T) {
+   append(value: T): ListNode<T> {
       const newNode = LinkedList.createNode(value);
       if (!this._head) {
          this._head = newNode;
@@ -58,11 +58,11 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   prepend(value: T) {
+   prepend(value: T): ListNode<T> {
       if (this._head) {
-         this.insertBefore(this._head, value);
+         return this.insertBefore(this._head, value);
       } else {
-         this.append(value);
+         return this.append(value);
       }
    }
 
@@ -70,37 +70,46 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     * Removes a node from the list.
     *
     * @param node The node to remove.
+    *
+    * @returns True if the node is deleted, otherwise false.
     */
-   deleteNode(node: ListNode<T>): void {
-      if (this._head === null) return;
+   deleteNode(node: ListNode<T>): boolean {
+      if (this._head === undefined) return false;
 
       if (this._head === node) {
          this._head = this._head.next();
-         if (this._head !== null) {
-            changePrev(this._head, null);
+         if (this._head !== undefined) {
+            changePrev(this._head, undefined);
          } else {
-            this._tail = null;
+            this._tail = undefined;
          }
          this._size--;
+         return true;
       } else if (this._tail === node) {
          this._tail = this._tail.prev();
-         if (this._tail !== null) {
-            changeNext(this._tail, null);
+         if (this._tail !== undefined) {
+            changeNext(this._tail, undefined);
          } else {
-            this._head = null;
+            this._head = undefined;
          }
          this._size--;
+         return true;
       } else {
          let next = node.next();
-         if (next !== null && next.prev() === node) {
-            changePrev(next, node.prev());
-            this._size--;
-         }
          let prev = node.prev();
-         if (prev !== null && prev.next() === node) {
+         if (
+            next !== undefined &&
+            prev !== undefined &&
+            prev.next() === node &&
+            next.prev() === node
+         ) {
+            changePrev(next, node.prev());
             changeNext(prev, node.next());
             this._size--;
+            return true;
          }
+
+         return false;
       }
    }
 
@@ -112,7 +121,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   insertAfter(afterNode: ListNode<T>, value: T) {
+   insertAfter(afterNode: ListNode<T>, value: T): ListNode<T> {
       const newNode = new ListNode(value);
       changeNext(newNode, afterNode.next());
       changePrev(newNode, afterNode);
@@ -163,15 +172,14 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     * Finds a node with a specific value.
     *
     * @param value The value of the node to find.
-    * @returns The node with the specified value or null if not found.
+    * @returns The node with the specified value or undefined if not found.
     */
-   find(value: T): ListNode<T> | null {
+   find(value: T): ListNode<T> | void {
       for (let node of this) {
          if (node.value === value) {
             return node;
          }
       }
-      return null;
    }
 
    /**
@@ -193,8 +201,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     * Removes all nodes from the list.
     */
    clear(): void {
-      this._head = null;
-      this._tail = null;
+      this._head = undefined;
+      this._tail = undefined;
       this._size = 0;
    }
 
@@ -230,18 +238,18 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    /**
     * Returns the head node of the list.
     *
-    * @returns The head node or null if the list is empty.
+    * @returns The head node or undefined if the list is empty.
     */
-   head(): ListNode<T> | null {
+   head(): ListNode<T> | undefined {
       return this._head;
    }
 
    /**
     * Returns the tail node of the list.
     *
-    * @returns The tail node or null if the list is empty.
+    * @returns The tail node or undefined if the list is empty.
     */
-   tail(): ListNode<T> | null {
+   tail(): ListNode<T> | undefined {
       return this._tail;
    }
 
@@ -279,12 +287,12 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
  * without making typescript angry.
  */
 
-function changeNext<T>(node: ListNode<T>, next: ListNode<T> | null) {
+function changeNext<T>(node: ListNode<T>, next: ListNode<T> | undefined) {
    // @ts-ignore
    node._next = next;
 }
 
-function changePrev<T>(node: ListNode<T>, prev: ListNode<T> | null) {
+function changePrev<T>(node: ListNode<T>, prev: ListNode<T> | undefined) {
    // @ts-ignore
    node._prev = prev;
 }
