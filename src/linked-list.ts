@@ -275,18 +275,20 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
       return list;
    }
 
-   [Symbol.iterator](): Iterator<ListNode<T>> {
+   *values(): IterableIterator<ListNode<T>> {
+      let current = this.head();
+      while (current !== undefined) {
+         yield current;
+         current = current.next();
+      }
+   }
+
+   *[Symbol.iterator](): IterableIterator<ListNode<T>> {
       let current = this._head;
-      return {
-         next(): IteratorResult<ListNode<T>> {
-            if (current) {
-               const value = current;
-               current = current.next();
-               return { value, done: false };
-            }
-            return { value: undefined as any, done: true };
-         },
-      };
+      while (current !== undefined) {
+         yield current;
+         current = current.next();
+      }
    }
 }
 

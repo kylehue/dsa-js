@@ -100,17 +100,19 @@ export class Queue<T> {
       return queue;
    }
 
-   [Symbol.iterator](): Iterator<T> {
+   *values(): IterableIterator<T> {
       let current = this._list.head();
-      return {
-         next(): IteratorResult<T> {
-            if (current) {
-               const value = current.value;
-               current = current.next();
-               return { value, done: false };
-            }
-            return { value: undefined as any, done: true };
-         },
-      };
+      while (current !== undefined) {
+         yield current.value;
+         current = current.next();
+      }
+   }
+
+   *[Symbol.iterator](): IterableIterator<T> {
+      let current = this._list.head();
+      while (current !== undefined) {
+         yield current.value;
+         current = current.next();
+      }
    }
 }

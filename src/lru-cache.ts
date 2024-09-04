@@ -1,10 +1,10 @@
 import { LinkedList, ListNode } from "./linked-list";
 
-type Cache<K, V> = [V, ListNode<K>];
+type Cache<K, V> = [V, ListNode<[K, V]>];
 
 export class LRUCache<K, V> {
    private _capacity: number;
-   private _list = new LinkedList<K>();
+   private _list = new LinkedList<[K, V]>();
    private _cache = new Map<K, Cache<K, V>>();
 
    constructor(capacity: number = 100) {
@@ -14,7 +14,7 @@ export class LRUCache<K, V> {
    private _reenqueue(key: K, cache: Cache<K, V>) {
       if (!cache) throw new Error("Cache doesn't exist to be re-enqueued");
       this._list.deleteNode(cache[1]);
-      cache[1] = this._list.append(key);
+      cache[1] = this._list.append([key, cache[0]]);
    }
 
    /**
@@ -43,13 +43,13 @@ export class LRUCache<K, V> {
          // before adding, we must limit the capacity
          if (this._list.size() >= this._capacity) {
             let head = this._list.head()!;
-            let key = head.value;
+            let key = head.value[0];
             this._list.deleteNode(head);
             this._cache.delete(key);
          }
 
          // enqueue
-         let newNode = this._list.append(key);
+         let newNode = this._list.append([key, value]);
          this._cache.set(key, [value, newNode]);
       }
    }
@@ -86,61 +86,35 @@ export class LRUCache<K, V> {
       return this._cache.size;
    }
 
-   entries(): IterableIterator<[K, V]> {
+   *keys(): IterableIterator<K> {
       let current = this._list.head();
-      let $this = this;
-      return {
-         next(): IteratorResult<[K, V]> {
-            if (current !== undefined) {
-               let key = current.value;
-               let value = $this._cache.get(key)![0];
-               current = current.next();
-               return { value: [key, value], done: false };
-            }
-            return { value: undefined as any, done: true };
-         },
-         [Symbol.iterator](): IterableIterator<[K, V]> {
-            return this;
-         },
-      };
+      while (current !== undefined) {
+         yield current.value[0];
+         current = current.next();
+      }
    }
 
-   keys(): IterableIterator<K> {
-      let entries = this.entries();
-      return {
-         next(): IteratorResult<K> {
-            let next = entries.next().value;
-            if (next !== undefined) return { value: next[0], done: false };
-            return { value: undefined as any, done: true };
-         },
-         [Symbol.iterator](): IterableIterator<K> {
-            return this;
-         },
-      };
+   *values(): IterableIterator<V> {
+      let current = this._list.head();
+      while (current !== undefined) {
+         yield current.value[1];
+         current = current.next();
+      }
    }
 
-   values(): IterableIterator<V> {
-      let entries = this.entries();
-      return {
-         next(): IteratorResult<V> {
-            let next = entries.next().value;
-            if (next !== undefined) return { value: next[1], done: false };
-            return { value: undefined as any, done: true };
-         },
-         [Symbol.iterator](): IterableIterator<V> {
-            return this;
-         },
-      };
+   *entries(): IterableIterator<[K, V]> {
+      let current = this._list.head();
+      while (current !== undefined) {
+         yield [...current.value];
+         current = current.next();
+      }
    }
 
-   [Symbol.iterator](): Iterator<[K, V]> {
-      let entries = this.entries();
-      return {
-         next(): IteratorResult<[K, V]> {
-            let next = entries.next().value;
-            if (next !== undefined) return { value: next, done: false };
-            return { value: undefined as any, done: true };
-         },
-      };
+   *[Symbol.iterator](): IterableIterator<[K, V]> {
+      let current = this._list.head();
+      while (current !== undefined) {
+         yield [...current.value];
+         current = current.next();
+      }
    }
 }
