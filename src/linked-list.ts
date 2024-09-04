@@ -66,6 +66,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          } else {
             this._tail = null;
          }
+         this._size--;
       } else if (this._tail === node) {
          this._tail = this._tail.prev();
          if (this._tail !== null) {
@@ -73,18 +74,19 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
          } else {
             this._head = null;
          }
+         this._size--;
       } else {
          let next = node.next();
-         if (next !== null) {
+         if (next !== null && next.prev() === node) {
             changePrev(next, node.prev());
+            this._size--;
          }
          let prev = node.prev();
-         if (prev !== null) {
+         if (prev !== null && prev.next() === node) {
             changeNext(prev, node.next());
+            this._size--;
          }
       }
-
-      this._size--;
    }
 
    /**

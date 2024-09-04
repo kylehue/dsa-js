@@ -32,6 +32,19 @@ describe("LinkedList", () => {
       expect(newHead?.prev()).toBe(null);
    });
 
+   it("should only remove nodes that exists in the list", () => {
+      let randomNode = LinkedList.createNode(2);
+      list.deleteNode(randomNode);
+      expect(list.size()).toBe(3);
+
+      let head = list.head()!;
+      list.deleteNode(head);
+      expect(list.size()).toBe(2);
+
+      list.deleteNode(head);
+      expect(list.size()).toBe(2);
+   });
+
    it("should remove the tail node correctly", () => {
       const tail = list.tail();
       if (tail) {
