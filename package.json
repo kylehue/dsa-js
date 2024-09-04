@@ -1,5 +1,5 @@
 {
-   "name": "dsa-js",
+   "name": "dsajs",
    "private": false,
    "version": "0.0.0",
    "type": "module",
@@ -26,26 +26,6 @@
          "import": "./dist/esm/index.js",
          "require": "./dist/cjs/index.js",
          "types": "./dist/types/index.d.ts"
-      },
-      "./data-structures/*": {
-         "import": "./dist/esm/data-structures/*.js",
-         "require": "./dist/cjs/data-structures/*.js",
-         "types": "./dist/types/data-structures/*.d.ts"
-      },
-      "./data-structures": {
-         "import": "./dist/esm/data-structures/index.js",
-         "require": "./dist/cjs/data-structures/index.js",
-         "types": "./dist/types/data-structures/index.d.ts"
-      },
-      "./algorithms/*": {
-         "import": "./dist/esm/algorithms/*.js",
-         "require": "./dist/cjs/algorithms/*.js",
-         "types": "./dist/types/algorithms/*.d.ts"
-      },
-      "./algorithms": {
-         "import": "./dist/esm/algorithms/index.js",
-         "require": "./dist/cjs/algorithms/index.js",
-         "types": "./dist/types/algorithms/index.d.ts"
       }
    },
    "files": [
