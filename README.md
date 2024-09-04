@@ -13,6 +13,7 @@
   - [DisjointSet](#disjointset)
   - [Trie](#trie)
   - [Quadtree](#quadtree)
+  - [LRUCache](#lrucache)
   - [Contributing](#contributing)
 
 ## Installation
@@ -249,6 +250,44 @@ quadtree.insert(item);
 // Retrieve all objects within specified bounds
 let searchBounds = { x: 5, y: 5, width: 20, height: 20 };
 let retrievedItems = quadtree.retrieve(searchBounds);
+```
+
+## LRUCache
+LRUCache or Least-Recently-Used Cache acts exactly like a hashmap
+except that it removes entries that are least recently used when it
+hits the max capacity.
+```ts
+import { LRUCache } from "dsa-js";
+
+// Create an LRUCache with a specific capacity
+let cache = new LRUCache<string, number>(3);
+
+// Adds a new element to the cache
+cache.set("a", 1);
+cache.set("b", 2);
+
+// Retrieves a value from the cache by key
+let value = cache.get("a");
+
+// Check if a key exists in the cache
+let exists = cache.has("b");
+
+// Update an existing key with a new value
+cache.set("a", 10);
+
+// Deletes an element from the cache
+let wasDeleted = cache.delete("a");
+
+// Clear all elements from the cache
+cache.clear();
+
+// Get the current size of the cache
+let size = cache.size();
+
+// Support for-of iteration to loop over entries
+for (let [key, value] of cache) {
+    console.log(`${key}: ${value}`);
+}
 ```
 
 ## Contributing
