@@ -8,9 +8,9 @@ export class Deque<T> extends Queue<T> {
    enqueueFront(value: T): void {
       let head = this._list.head();
       if (head) {
-         this._list.addNodeBefore(head, value);
+         this._list.appendBefore(head, value);
       } else {
-         this._list.addNode(value);
+         this._list.append(value);
       }
    }
 
@@ -22,7 +22,7 @@ export class Deque<T> extends Queue<T> {
       let tail = this._list.tail();
       if (tail) {
          let value = tail.value;
-         this._list.removeNode(tail);
+         this._list.deleteNode(tail);
          return value;
       }
       return null;

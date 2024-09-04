@@ -9,7 +9,7 @@ export class Queue<T> {
     * @param value The value to add to the queue.
     */
    enqueue(value: T): void {
-      this._list.addNode(value);
+      this._list.append(value);
    }
 
    /**
@@ -21,7 +21,7 @@ export class Queue<T> {
    dequeue(): T | null {
       const head = this._list.head();
       if (head) {
-         this._list.removeNode(head);
+         this._list.deleteNode(head);
          return head.value;
       }
 

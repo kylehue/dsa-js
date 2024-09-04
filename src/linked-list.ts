@@ -24,6 +24,10 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    private _tail: ListNode<T> | null = null;
    private _size: number = 0;
 
+   static createNode<T>(value: T): ListNode<T> {
+      return new ListNode(value);
+   }
+
    /**
     * Adds a node with the specified value to the end of the list.
     *
@@ -31,8 +35,8 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   addNode(value: T) {
-      const newNode = new ListNode(value);
+   append(value: T) {
+      const newNode = LinkedList.createNode(value);
       if (!this._head) {
          this._head = newNode;
          this._tail = newNode;
@@ -52,7 +56,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @param node The node to remove.
     */
-   removeNode(node: ListNode<T>): void {
+   deleteNode(node: ListNode<T>): void {
       if (this._head === null) return;
 
       if (this._head === node) {
@@ -91,7 +95,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   addNodeAfter(afterNode: ListNode<T>, value: T) {
+   appendAfter(afterNode: ListNode<T>, value: T) {
       const newNode = new ListNode(value);
       changeNext(newNode, afterNode.next());
       changePrev(newNode, afterNode);
@@ -116,7 +120,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     *
     * @returns The newly added node.
     */
-   addNodeBefore(beforeNode: ListNode<T>, value: T): ListNode<T> {
+   appendBefore(beforeNode: ListNode<T>, value: T): ListNode<T> {
       const newNode = new ListNode(value);
 
       if (this._head === beforeNode) {
@@ -144,7 +148,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
     * @param value The value of the node to find.
     * @returns The node with the specified value or null if not found.
     */
-   findNode(value: T): ListNode<T> | null {
+   find(value: T): ListNode<T> | null {
       for (let node of this) {
          if (node.value === value) {
             return node;
@@ -162,7 +166,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
       const cloneList = new LinkedList<T>();
       let current = this._head;
       while (current) {
-         cloneList.addNode(current.value);
+         cloneList.append(current.value);
          current = current.next();
       }
       return cloneList;
@@ -233,7 +237,7 @@ export class LinkedList<T> implements Iterable<ListNode<T>> {
    static fromArray<T>(array: T[]): LinkedList<T> {
       const list = new LinkedList<T>();
       for (const value of array) {
-         list.addNode(value);
+         list.append(value);
       }
       return list;
    }

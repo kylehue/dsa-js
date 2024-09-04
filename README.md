@@ -33,19 +33,19 @@ let list = new LinkedList<number>();
 list = LinkedList.fromArray([1, 2, 3]);
 
 // Adds a node to the end of the list
-let node = list.addNode(4);
+let node = list.append(4);
 
 // Removes a node from the list
-list.removeNode(node);
+list.deleteNode(node);
 
 // Adds a node after a specific node
-let newNodeAfter = list.addNodeAfter(node, 5);
+let newNodeAfter = list.appendAfter(node, 5);
 
 // Adds a node before a specific node
-let newNodeBefore = list.addNodeBefore(node, 0);
+let newNodeBefore = list.appendBefore(node, 0);
 
 // Finds a node by value
-let foundNode = list.findNode(3);
+let foundNode = list.find(3);
 
 // Clones the linked list
 let clone = list.clone();
@@ -72,6 +72,9 @@ let tailNode = list.tail();
 for (let node of list) {
    console.log(node.value);
 }
+
+// Create a node
+let node = LinkedList.createNode(5);
 ```
 
 ## Queue
