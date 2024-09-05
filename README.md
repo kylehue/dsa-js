@@ -19,11 +19,16 @@
 
 ## Installation
 
-You can install **my-dsa** using npm:
-
+You can install using npm:
 ```bash
 npm install my-dsa
 ```
+
+or CDN:
+```bash
+https://cdn.jsdelivr.net/npm/my-dsa/dist/umd/index.js
+```
+The library will be accessible through the global name `mydsa`.
 
 ## LinkedList
 ```ts

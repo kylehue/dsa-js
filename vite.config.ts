@@ -12,7 +12,7 @@ export default defineConfig((args) => {
       build: {
          lib: {
             entry: resolve("./src/index.ts"),
-            name: "dsajs",
+            name: "mydsa",
             fileName: (format, name) => {
                if (args.mode == "modules") {
                   return `${name}.js`;
