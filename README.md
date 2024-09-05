@@ -14,6 +14,7 @@
   - [Trie](#trie)
   - [Quadtree](#quadtree)
   - [LRUCache](#lrucache)
+  - [SegmentTree](#segmenttree)
   - [Contributing](#contributing)
 
 ## Installation
@@ -285,6 +286,27 @@ let size = cache.size();
 for (let [key, value] of cache) {
     console.log(`${key}: ${value}`);
 }
+```
+
+## SegmentTree
+```ts
+import { SegmentTree } from "dsa-js";
+
+// Create a SegmentTree (default query is sum)
+let segTree = new SegmentTree([1, 2, 3, 4, 5]);
+
+// Query the sum over a range
+let sum = segTree.query(1, 3); // 9
+
+// Update an element at a specific index
+segTree.update(2, 10);
+
+// Create a SegmentTree for querying min values
+let minTree = new SegmentTree([3, 5, 2, 7, 1], (a, b) => Math.min(a, b));
+
+// Query the minimum over a range
+// Note that we have to set the initial value of result to Infinity
+let min = minTree.query(1, 3, Infinity); // 2
 ```
 
 ## Contributing

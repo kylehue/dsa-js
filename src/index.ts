@@ -6,3 +6,4 @@ export { Trie } from "./trie";
 export { DisjointSet } from "./disjoint-set";
 export { Quadtree } from "./quadtree";
 export { LRUCache } from "./lru-cache";
+export { SegmentTree } from "./segment-tree";
