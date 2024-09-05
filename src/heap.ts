@@ -1,7 +1,7 @@
 import { swap } from "@/utils/common";
 import { Comparator, defaultComparator } from "@/utils/comparator";
 
-export class Heap<T> {
+export class Heap<T = number> {
    private _heap: T[] = [];
    private _comparator: Comparator<T> = defaultComparator;
 

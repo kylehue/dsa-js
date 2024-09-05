@@ -2,7 +2,7 @@ import { LinkedList, ListNode } from "./linked-list";
 
 type Cache<K, V> = [V, ListNode<[K, V]>];
 
-export class LRUCache<K, V> {
+export class LRUCache<K = any, V = any> {
    private _capacity: number;
    private _list = new LinkedList<[K, V]>();
    private _cache = new Map<K, Cache<K, V>>();

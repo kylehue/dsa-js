@@ -1,6 +1,6 @@
 import { LinkedList } from "./linked-list";
 
-export class Queue<T> {
+export class Queue<T = any> {
    protected _list: LinkedList<T> = new LinkedList();
 
    /**

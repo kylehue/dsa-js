@@ -24,7 +24,7 @@ export class ListNode<T> {
 /**
  * Represents a doubly linked list.
  */
-export class LinkedList<T> implements Iterable<ListNode<T>> {
+export class LinkedList<T = any> implements Iterable<ListNode<T>> {
    private _head: ListNode<T> | undefined = undefined;
    private _tail: ListNode<T> | undefined = undefined;
    private _size: number = 0;

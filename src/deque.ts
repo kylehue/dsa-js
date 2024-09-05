@@ -1,6 +1,6 @@
 import { Queue } from "./queue";
 
-export class Deque<T> extends Queue<T> {
+export class Deque<T = any> extends Queue<T> {
    /**
     * Adds a value to the front of the queue.
     * @param value The value to add to the front of the queue.
