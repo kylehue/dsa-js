@@ -1,9 +1,9 @@
-# dsa-js
+# my-dsa
 
-**dsa-js** is a JavaScript library that provides a collection of reusable data structures.
+**my-dsa** is a JavaScript library that provides a collection of reusable data structures.
 
 ## Table of Contents
-- [dsa-js](#dsa-js)
+- [my-dsa](#my-dsa)
   - [Table of Contents](#table-of-contents)
   - [Installation](#installation)
   - [LinkedList](#linkedlist)
@@ -19,15 +19,15 @@
 
 ## Installation
 
-You can install **dsa-js** using npm:
+You can install **my-dsa** using npm:
 
 ```bash
-npm install dsa-js
+npm install my-dsa
 ```
 
 ## LinkedList
 ```ts
-import { LinkedList } from "dsa-js";
+import { LinkedList } from "my-dsa";
 
 let list = new LinkedList<number>();
 
@@ -81,7 +81,7 @@ for (let node of list) {
 
 ## Queue
 ```ts
-import { Queue } from "dsa-js";
+import { Queue } from "my-dsa";
 
 let queue = new Queue<number>();
 
@@ -124,7 +124,7 @@ for (let item of queue) {
 ## Deque
 Deque or Double-Ended Queue is similar to queue except that you can add an element in front and dequeue from the back. It extends the [Queue](#queue) data structure.
 ```ts
-import { Deque } from "dsa-js";
+import { Deque } from "my-dsa";
 
 const deque = new Deque<number>();
 
@@ -137,7 +137,7 @@ deque.dequeueBack();
 
 ## Heap
 ```ts
-import { Heap } from "dsa-js";
+import { Heap } from "my-dsa";
 
 let heap = new Heap<number>();
 
@@ -177,7 +177,7 @@ let array = heap.toArray();
 
 ## DisjointSet
 ```ts
-import { DisjointSet } from "dsa-js";
+import { DisjointSet } from "my-dsa";
 
 let ds = new DisjointSet<number>();
 
@@ -198,7 +198,7 @@ let isAlreadyUnified = ds.union(1, 3);
 
 ## Trie
 ```ts
-import { Trie } from "dsa-js";
+import { Trie } from "my-dsa";
 
 // Create a new trie
 let trie = new Trie();
@@ -234,7 +234,7 @@ let suggestions = trie.autocomplete("app");
 
 ## Quadtree
 ```ts
-import { Quadtree } from "dsa-js";
+import { Quadtree } from "my-dsa";
 
 // Create a new quadtree with specified bounds and configuration
 let bounds = { x: 0, y: 0, width: 100, height: 100 };
@@ -255,7 +255,7 @@ LRUCache or Least-Recently-Used Cache acts exactly like a hashmap
 except that it removes entries that are least recently used when it
 hits the max capacity.
 ```ts
-import { LRUCache } from "dsa-js";
+import { LRUCache } from "my-dsa";
 
 // Create an LRUCache with a specific capacity
 let cache = new LRUCache<string, number>(3);
@@ -290,7 +290,7 @@ for (let [key, value] of cache) {
 
 ## SegmentTree
 ```ts
-import { SegmentTree } from "dsa-js";
+import { SegmentTree } from "my-dsa";
 
 // Create a SegmentTree (default query is sum)
 let segTree = new SegmentTree([1, 2, 3, 4, 5]);
