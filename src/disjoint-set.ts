@@ -80,4 +80,12 @@ export class DisjointSet<T = number> {
 
       return true;
    }
+
+   /**
+    * Clears the disjoint set.
+    */
+   clear() {
+      this._parentMap.clear();
+      this._rankMap.clear();
+   }
 }
