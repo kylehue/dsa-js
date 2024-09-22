@@ -199,6 +199,9 @@ let root = ds.findOrAdd(4);
 
 // Union two sets containing the specified nodes
 let isAlreadyUnified = ds.union(1, 3);
+
+// Get the size of the disjoint set
+let size = ds.size();
 ```
 
 ## Trie

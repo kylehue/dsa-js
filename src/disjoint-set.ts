@@ -84,8 +84,15 @@ export class DisjointSet<T = number> {
    /**
     * Clears the disjoint set.
     */
-   clear() {
+   clear(): void {
       this._parentMap.clear();
       this._rankMap.clear();
+   }
+
+   /**
+    * Returns the number of elements in the disjoint set.
+    */
+   size(): number {
+      return this._parentMap.size;
    }
 }

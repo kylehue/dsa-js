@@ -67,4 +67,14 @@ describe("DisjointSet", () => {
       expect(ds.find("B")).toBe(undefined);
       expect(ds.find("C")).toBe(undefined);
    });
+
+   test("should get size correctly", () => {
+      ds.add("A");
+      ds.add("B");
+      ds.add("C");
+      ds.union("A", "B");
+      ds.union("B", "C");
+
+      expect(ds.size()).toBe(3);
+   });
 });
