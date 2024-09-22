@@ -272,8 +272,7 @@ export class AVLTree<T = number> {
     * Creates an AVLTree from an unsorted array of elements.
     *
     * @param array The array of elements to insert into the tree.
-    * @param valueMapper A function to map the elements to their
-    * corresponding values for comparison.
+    * @param comparator The comparator function to use. (Optional)
     *
     * @timeComplexity `O(n * log(n))`
     *
@@ -289,8 +288,7 @@ export class AVLTree<T = number> {
     * Creates an AVLTree from a sorted array of elements.
     *
     * @param array The array of elements to insert into the tree.
-    * @param valueMapper A function to map the elements to their
-    * corresponding values for comparison.
+    * @param comparator The comparator function to use. (Optional)
     *
     * @timeComplexity `O(n)`
     *
