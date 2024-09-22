@@ -11,6 +11,8 @@ export class Quadtree<T extends Bounds> {
 
    /**
     * Clears the quadtree.
+    *
+    * @timeComplexity `O(1)`
     */
    clear(): void {
       this._root = new QuadtreeNode(this, this._baseBounds);
@@ -18,7 +20,10 @@ export class Quadtree<T extends Bounds> {
 
    /**
     * Inserts an item into the quadtree.
+    *
     * @param item The item to insert.
+    *
+    * @timeComplexity `O(n)` / `Ω(log(n))`
     */
    insert(item: T): void {
       this._root.insert(item);
@@ -26,7 +31,11 @@ export class Quadtree<T extends Bounds> {
 
    /**
     * Retrieves all objects that is inside the specified bounds.
+    *
     * @param bounds The bounds to retrieve the objects from.
+    *
+    * @timeComplexity `O(n)` / `Ω(log(n))`
+    *
     * @returns An array of objects that are inside the specified bounds.
     */
    retrieve(bounds: Bounds): T[] {

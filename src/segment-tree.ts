@@ -5,9 +5,10 @@ export class SegmentTree {
 
    /**
     * Initializes the segment tree.
-    * @param {number[]} nums - Array of numbers to query from.
-    * @param {SegmentTreeBuilder} builder - A custom function to build the tree
-    * (e.g. sum, min, max).
+    * @param nums - Array of numbers to query from.
+    * @param builder - A custom function to build the tree (e.g. sum, min, max).
+    *
+    * @timeComplexity `O(n)`
     *
     * @example
     * // For sum queries
@@ -39,10 +40,12 @@ export class SegmentTree {
    /**
     * Queries the tree for a combined value over a range.
     *
-    * @param {number} start - The starting index of the range (inclusive).
-    * @param {number} end - The ending index of the range (inclusive).
-    * @param {number} [resultInitialValue=0] - The initial value to
+    * @param start The starting index of the range (inclusive).
+    * @param end The ending index of the range (inclusive).
+    * @param resultInitialValue The initial value to
     * start combining with. (Defaults to `0`).
+    *
+    * @timeComplexity `O(log(n))`
     *
     * The choice of this value should depend on the builder function:
     * - When querying for sum, set this to `0`. (Default)
@@ -50,9 +53,9 @@ export class SegmentTree {
     * - When querying for minimum value, set this to `Infinity`.
     * - For other operations, use an appropriate initial value
     * that aligns with the builder function.
-    * @returns {number} The result of the query over the range.
+    * @returns The result of the query over the range.
     */
-   query(start: number, end: number, resultInitialValue = 0) {
+   query(start: number, end: number, resultInitialValue = 0): number {
       start += this._origSize;
       end += this._origSize;
 
@@ -78,10 +81,12 @@ export class SegmentTree {
    /**
     * Updates the value at a specific index.
     *
-    * @param {number} index - The index of the value to update.
-    * @param {number} newValue - The new value.
+    * @param index The index of the value to update.
+    * @param newValue The new value.
+    *
+    * @timeComplexity `O(log(n))`
     */
-   update(index: number, newValue: number) {
+   update(index: number, newValue: number): void {
       index += this._origSize;
       this._tree[index] = newValue;
 

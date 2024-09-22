@@ -19,6 +19,8 @@ export class LRUCache<K = any, V = any> {
 
    /**
     * Returns a specified element from the cache.
+    *
+    * @timeComplexity `O(1)`
     */
    get(key: K): V | void {
       let cache = this._cache.get(key);
@@ -32,6 +34,8 @@ export class LRUCache<K = any, V = any> {
     * Adds a new element with a specified key and value to the cache.
     * If an element with the same key already exists, the element will
     * be updated and marked as the most recent.
+    *
+    * @timeComplexity `O(1)`
     */
    set(key: K, value: V): void {
       let cache = this._cache.get(key);
@@ -56,6 +60,8 @@ export class LRUCache<K = any, V = any> {
 
    /**
     * Returns whether an element with the specified key exists or not.
+    *
+    * @timeComplexity `O(1)`
     */
    has(key: K): boolean {
       return this._cache.has(key);
@@ -64,7 +70,9 @@ export class LRUCache<K = any, V = any> {
    /**
     * Deletes a specified element from the cache.
     *
-    * @returns True if the element was deleted, false otherwise.
+    * @timeComplexity `O(1)`
+    *
+    * @returns True if the element was deleted, otherwise false.
     */
    delete(key: K): boolean {
       let cache = this._cache.get(key);
@@ -76,12 +84,21 @@ export class LRUCache<K = any, V = any> {
 
    /**
     * Clears the cache.
+    *
+    * @timeComplexity `O(1)`
     */
    clear(): void {
       this._cache.clear();
       this._list.clear();
    }
 
+   /**
+    * Gets the number of cached items.
+    *
+    * @timeComplexity `O(1)`
+    *
+    * @returns The size of the cache.
+    */
    size(): number {
       return this._cache.size;
    }

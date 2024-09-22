@@ -7,6 +7,8 @@ export class DisjointSet<T = number> {
     *
     * @param node The node to add.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns Returns false if the node is already in the disjoint set.
     */
    add(node: T): boolean {
@@ -20,6 +22,8 @@ export class DisjointSet<T = number> {
     * Finds the root of the set containing the given node.
     *
     * @param node The node to find.
+    *
+    * @timeComplexity `O(α(n))` where `α(n)` is the inverse Ackermann function
     *
     * @returns The representative node of the set, or null if the node
     * is not found.
@@ -41,6 +45,9 @@ export class DisjointSet<T = number> {
     * It adds the node to the set if it does not exist.
     *
     * @param node The node to find or add.
+    *
+    * @timeComplexity `O(α(n))` where `α(n)` is the inverse Ackermann function
+    *
     * @returns The representative node of the set.
     */
    findOrAdd(node: T): T {
@@ -57,6 +64,9 @@ export class DisjointSet<T = number> {
     *
     * @param nodeA The first node.
     * @param nodeB The second node.
+    *
+    * @timeComplexity `O(α(n))` where `α(n)` is the inverse Ackermann function
+    * of `n`.
     *
     * @returns Returns false if the 2 nodes are already in the same set.
     */
@@ -83,6 +93,8 @@ export class DisjointSet<T = number> {
 
    /**
     * Clears the disjoint set.
+    *
+    * @timeComplexity `O(1)`
     */
    clear(): void {
       this._parentMap.clear();
@@ -91,6 +103,8 @@ export class DisjointSet<T = number> {
 
    /**
     * Returns the number of elements in the disjoint set.
+    *
+    * @timeComplexity `O(1)`
     */
    size(): number {
       return this._parentMap.size;

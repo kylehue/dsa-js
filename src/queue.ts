@@ -7,6 +7,8 @@ export class Queue<T = any> {
     * Adds a value to the end of the queue.
     *
     * @param value The value to add to the queue.
+    *
+    * @timeComplexity `O(1)`
     */
    enqueue(value: T): void {
       this._list.append(value);
@@ -14,6 +16,8 @@ export class Queue<T = any> {
 
    /**
     * Removes and returns the value at the front of the queue.
+    *
+    * @timeComplexity `O(1)`
     *
     * @returns The value at the front of the queue or undefined if the queue
     * is empty.
@@ -29,6 +33,8 @@ export class Queue<T = any> {
    /**
     * Returns the value at the front of the queue without removing it.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The value at the front of the queue or undefined if the queue
     * is empty.
     */
@@ -38,6 +44,8 @@ export class Queue<T = any> {
 
    /**
     * Returns the value at the back of the queue without removing it.
+    *
+    * @timeComplexity `O(1)`
     *
     * @returns The value at the back of the queue or undefined if the queue
     * is empty.
@@ -49,6 +57,8 @@ export class Queue<T = any> {
    /**
     * Returns the number of elements in the queue.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The number of elements in the queue.
     */
    size(): number {
@@ -58,6 +68,8 @@ export class Queue<T = any> {
    /**
     * Returns true if the queue is empty, false otherwise.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns True if the queue is empty, false otherwise.
     */
    isEmpty(): boolean {
@@ -66,6 +78,8 @@ export class Queue<T = any> {
 
    /**
     * Removes all elements from the queue.
+    *
+    * @timeComplexity `O(1)`
     */
    clear(): void {
       this._list.clear();
@@ -73,6 +87,8 @@ export class Queue<T = any> {
 
    /**
     * Creates a copy of the queue.
+    *
+    * @timeComplexity `O(n)`
     */
    clone(): Queue<T> {
       const queue = new Queue<T>();
@@ -83,6 +99,8 @@ export class Queue<T = any> {
    /**
     * Converts the queue to an array.
     *
+    * @timeComplexity `O(n)`
+    *
     * @returns An array containing all the values in the queue.
     */
    toArray(): T[] {
@@ -91,6 +109,8 @@ export class Queue<T = any> {
 
    /**
     * Creates a queue from an array of values.
+    *
+    * @timeComplexity `O(n)`
     */
    static fromArray<T>(array: T[]): Queue<T> {
       const queue = new Queue<T>();

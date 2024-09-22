@@ -3,7 +3,10 @@ import { Queue } from "./queue";
 export class Deque<T = any> extends Queue<T> {
    /**
     * Adds a value to the front of the queue.
+    *
     * @param value The value to add to the front of the queue.
+    *
+    * @timeComplexity `O(1)`
     */
    enqueueFront(value: T): void {
       this._list.prepend(value);
@@ -11,6 +14,9 @@ export class Deque<T = any> extends Queue<T> {
 
    /**
     * Removes and returns the value at the back of the queue.
+    *
+    * @timeComplexity `O(1)`
+    *
     * @returns The value at the front of the queue.
     */
    dequeueBack(): T | void {

@@ -34,6 +34,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     *
     * @param value The value of the node to add.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The newly added node.
     */
    append(value: T): ListNode<T> {
@@ -57,6 +59,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     *
     * @param value The value of the node to add.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The newly added node.
     */
    prepend(value: T): ListNode<T> {
@@ -71,6 +75,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     * Removes a node from the list.
     *
     * @param node The node to remove.
+    *
+    * @timeComplexity `O(1)`
     *
     * @returns True if the node is deleted, otherwise false.
     */
@@ -124,6 +130,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     * @param afterNode The node after which the new node should be added.
     * @param value The value of the new node.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The newly added node.
     */
    insertAfter(afterNode: ListNode<T>, value: T): ListNode<T> {
@@ -148,6 +156,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     *
     * @param beforeNode The node before which the new node should be added.
     * @param value The value of the new node.
+    *
+    * @timeComplexity `O(1)`
     *
     * @returns The newly added node.
     */
@@ -177,6 +187,9 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     * Finds a node with a specific value.
     *
     * @param value The value of the node to find.
+    *
+    * @timeComplexity `O(n)`
+    *
     * @returns The node with the specified value or undefined if not found.
     */
    find(value: T): ListNode<T> | void {
@@ -189,6 +202,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
 
    /**
     * Clones the linked list.
+    *
+    * @timeComplexity `O(n)`
     *
     * @returns A new linked list that is a clone of the current list.
     */
@@ -207,6 +222,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     *
     * Note: For efficiency, this doesn't delete nodes one by one.
     * Avoid reusing the old nodes to avoid unexpected behaviors.
+    *
+    * @timeComplexity `O(1)`
     */
    clear(): void {
       this._head = undefined;
@@ -216,6 +233,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
 
    /**
     * Returns the number of nodes in the list.
+    *
+    * @timeComplexity `O(1)`
     */
    size(): number {
       return this._size;
@@ -223,6 +242,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
 
    /**
     * Returns whether the list is empty.
+    *
+    * @timeComplexity `O(1)`
     */
    isEmpty(): boolean {
       return this._size === 0;
@@ -230,6 +251,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
 
    /**
     * Converts the linked list to an array.
+    *
+    * @timeComplexity `O(n)`
     *
     * @returns An array containing all the values in the list.
     */
@@ -240,6 +263,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
    /**
     * Returns the head node of the list.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The head node or undefined if the list is empty.
     */
    head(): ListNode<T> | undefined {
@@ -248,6 +273,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
 
    /**
     * Returns the tail node of the list.
+    *
+    * @timeComplexity `O(1)`
     *
     * @returns The tail node or undefined if the list is empty.
     */
@@ -259,6 +286,9 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     * Creates a linked list from an array of values.
     *
     * @param array The array of values to convert into a linked list.
+    *
+    * @timeComplexity `O(n)`
+    * 
     * @returns A new linked list containing the values from the array.
     */
    static fromArray<T>(array: T[]): LinkedList<T> {

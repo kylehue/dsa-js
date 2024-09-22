@@ -8,8 +8,7 @@ export class Heap<T = number> {
    /**
     * Creates a new instance of Heap.
     *
-    * @param {Comparator<T>} comparator The comparator function to use.
-    * (Optional)
+    * @param comparator The comparator function to use. (Optional)
     */
    constructor(comparator?: Comparator<T>) {
       if (comparator) this._comparator = comparator;
@@ -17,6 +16,8 @@ export class Heap<T = number> {
 
    /**
     * Returns the number of elements in the heap.
+    *
+    * @timeComplexity `O(1)`
     */
    size(): number {
       return this._heap.length;
@@ -24,6 +25,8 @@ export class Heap<T = number> {
 
    /**
     * Returns true if the heap is empty, false otherwise.
+    *
+    * @timeComplexity `O(1)`
     */
    isEmpty(): boolean {
       return this.size() === 0;
@@ -32,8 +35,10 @@ export class Heap<T = number> {
    /**
     * Returns the top element of the heap without removing it.
     *
-    * @returns {T | void} Returns the top element of the heap
-    * or undefined if the heap is empty.
+    * @timeComplexity `O(1)`
+    *
+    * @returns Returns the top element of the heap or undefined if
+    * the heap is empty.
     */
    peek(): T | void {
       return this.isEmpty() ? undefined : this._heap[0];
@@ -42,7 +47,9 @@ export class Heap<T = number> {
    /**
     * Adds elements to the heap.
     *
-    * @param {T[]} items The elements to add to the heap.
+    * @timeComplexity `O(k * log(n))` where `k` is the number of items to add.
+    *
+    * @param items The elements to add to the heap.
     */
    push(...items: T[]): void {
       for (const item of items) {
@@ -54,8 +61,10 @@ export class Heap<T = number> {
    /**
     * Removes the top element from the heap and returns it.
     *
-    * @returns {T | undefined} The top element of the heap or
-    * undefined if the heap is empty.
+    * @timeComplexity `O(log(n))`
+    *
+    * @returns The top element of the heap or undefined if
+    * the heap is empty.
     */
    pop(): T | undefined {
       if (this.isEmpty()) return;
@@ -69,6 +78,8 @@ export class Heap<T = number> {
 
    /**
     * Clears the heap.
+    *
+    * @timeComplexity `O(1)`
     */
    clear(): void {
       this._heap = [];
@@ -76,6 +87,8 @@ export class Heap<T = number> {
 
    /**
     * Clones the heap.
+    *
+    * @timeComplexity `O(n)`
     */
    clone(): Heap<T> {
       const clonedHeap = new Heap<T>(this._comparator);
@@ -84,7 +97,9 @@ export class Heap<T = number> {
    }
 
    /**
-    * Converts the heap to an array.
+    * Converts the heap to a sorted array.
+    *
+    * @timeComplexity `O(n * log(n))`
     */
    toArray(): T[] {
       const clone = this.clone();
@@ -99,11 +114,12 @@ export class Heap<T = number> {
    /**
     * Builds a heap from the given array.
     *
-    * @param {T[]} array The array to build the heap from.
-    * @param {Comparator<T>} comparator The comparator function to use.
-    * (Optional)
+    * @param array The array to build the heap from.
+    * @param comparator The comparator function to use. (Optional)
     *
-    * @returns {Heap<T>} The heap built from the given array.
+    * @timeComplexity `O(n * log(n))`
+    *
+    * @returns The heap built from the given array.
     */
    static fromArray<T>(array: T[], comparator?: Comparator<T>): Heap<T> {
       const heap = new Heap<T>(comparator);

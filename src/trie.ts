@@ -26,6 +26,8 @@ export class Trie {
     * Inserts a word into the trie.
     *
     * @param word The word to insert.
+    *
+    * @timeComplexity `O(m)` where `m` is the word's length.
     */
    insert(word: string): void {
       let current = this._root;
@@ -39,7 +41,10 @@ export class Trie {
     * Searches for a word in the trie.
     *
     * @param word The word to search for.
-    * @returns True if the word is found, false otherwise.
+    *
+    * @timeComplexity `O(m)` where `m` is the word's length.
+    *
+    * @returns True if the word is found, otherwise false.
     */
    search(word: string): boolean {
       let current: TrieNode | undefined = this._root;
@@ -54,7 +59,10 @@ export class Trie {
     * Checks if any word in the trie starts with the given prefix.
     *
     * @param prefix The prefix to check.
-    * @returns True if the prefix is found, false otherwise.
+    *
+    * @timeComplexity `O(m)` where `m` is the prefix's length.
+    *
+    * @returns True if the prefix is found, otherwise false.
     */
    startsWith(prefix: string): boolean {
       let current: TrieNode | undefined = this._root;
@@ -69,6 +77,9 @@ export class Trie {
     * Deletes a word from the trie.
     *
     * @param word The word to delete.
+    *
+    * @timeComplexity `O(m)` where `m` is the word's length.
+    *
     * @returns True if the word was successfully deleted, false if the
     * word was not found.
     */
@@ -107,6 +118,9 @@ export class Trie {
    /**
     * Returns all words in the trie.
     *
+    * @timeComplexity `O(n * k)` where `n` is the number of words and
+    * `k` is the average length of each word.
+    *
     * @returns An array of all words stored in the trie.
     */
    getAllWords(): string[] {
@@ -116,7 +130,9 @@ export class Trie {
    /**
     * Checks if the trie is empty.
     *
-    * @returns True if the trie is empty, false otherwise.
+    * @timeComplexity `O(1)`
+    *
+    * @returns True if the trie is empty, otherwise false.
     */
    isEmpty(): boolean {
       return this._root.children.size === 0;
@@ -124,6 +140,8 @@ export class Trie {
 
    /**
     * Clears all words from the trie.
+    *
+    * @timeComplexity `O(1)`
     */
    clear(): void {
       this._root = new TrieNode("");
@@ -133,6 +151,9 @@ export class Trie {
     * Finds the longest prefix of the given word that exists in the trie.
     *
     * @param word The word to find the longest prefix for.
+    *
+    * @timeComplexity `O(m)` where `m` is the word's length.
+    *
     * @returns The longest prefix found in the trie.
     */
    longestPrefixMatch(word: string): string {
@@ -158,6 +179,10 @@ export class Trie {
     * Returns a list of all words in the trie with the given prefix.
     *
     * @param prefix The prefix to autocomplete.
+    *
+    * @timeComplexity `O(p + k)` where `p` is the prefix's length and
+    * `k` is the total number of characters in the words that match the prefix.
+    *
     * @returns An array of words that start with the given prefix.
     */
    autocomplete(prefix: string): string[] {
