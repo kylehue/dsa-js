@@ -86,7 +86,7 @@ export class Queue<T = any> {
     * @returns An array containing all the values in the queue.
     */
    toArray(): T[] {
-      return this._list.toArray();
+      return [...this.values()];
    }
 
    /**
@@ -109,10 +109,6 @@ export class Queue<T = any> {
    }
 
    *[Symbol.iterator](): IterableIterator<T> {
-      let current = this._list.head();
-      while (current !== undefined) {
-         yield current.value;
-         current = current.next();
-      }
+      yield* this.values();
    }
 }

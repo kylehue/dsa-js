@@ -233,14 +233,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     *
     * @returns An array containing all the values in the list.
     */
-   toArray(): T[] {
-      const result: T[] = [];
-      let current = this._head;
-      while (current) {
-         result.push(current.value);
-         current = current.next();
-      }
-      return result;
+   toArray(): ListNode<T>[] {
+      return [...this.values()];
    }
 
    /**
@@ -284,11 +278,7 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
    }
 
    *[Symbol.iterator](): IterableIterator<ListNode<T>> {
-      let current = this._head;
-      while (current !== undefined) {
-         yield current;
-         current = current.next();
-      }
+      yield* this.values();
    }
 }
 

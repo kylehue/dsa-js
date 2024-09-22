@@ -101,22 +101,22 @@ describe("LinkedList", () => {
 
    it("should clone the linked list correctly", () => {
       const clone = list.clone();
-      expect(clone.toArray()).toEqual([1, 2, 3]);
+      expect(clone.toArray().map((v) => v.value)).toEqual([1, 2, 3]);
    });
 
    it("should convert the linked list to an array correctly", () => {
-      expect(list.toArray()).toEqual([1, 2, 3]);
+      expect(list.toArray().map((v) => v.value)).toEqual([1, 2, 3]);
    });
 
    it("should clear the linked list correctly", () => {
       list.clear();
-      expect(list.toArray()).toEqual([]);
+      expect(list.toArray().map((v) => v.value)).toEqual([]);
    });
 
    it("should create linked list from an array correctly", () => {
       const array = [1, 2, 3];
       const linkedList = LinkedList.fromArray(array);
-      expect(linkedList.toArray()).toEqual(array);
+      expect(linkedList.toArray().map((v) => v.value)).toEqual(array);
    });
 
    it("should properly return size of the linked list", () => {
@@ -191,7 +191,7 @@ describe("LinkedList - Empty", () => {
       list.append(3);
 
       const clone = list.clone();
-      expect(clone.toArray()).toEqual([1, 2, 3]);
+      expect(clone.toArray().map((v) => v.value)).toEqual([1, 2, 3]);
    });
 
    it("should handle iterating over an empty list", () => {

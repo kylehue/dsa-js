@@ -111,10 +111,6 @@ export class LRUCache<K = any, V = any> {
    }
 
    *[Symbol.iterator](): IterableIterator<[K, V]> {
-      let current = this._list.head();
-      while (current !== undefined) {
-         yield [...current.value];
-         current = current.next();
-      }
+      yield* this.entries();
    }
 }
