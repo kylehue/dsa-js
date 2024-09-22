@@ -73,41 +73,35 @@ export class Trie {
     * word was not found.
     */
    delete(word: string): boolean {
-      let info = { deleted: false }; // pass by reference (yeah this is ugly)
-      this._deleteHelper(this._root, word, 0, info);
-      return info.deleted;
-   }
-   private _deleteHelper(
-      node: TrieNode,
-      word: string,
-      index: number,
-      info: any
-   ): boolean {
-      if (index === word.length) {
-         if (!node.isEndOfWord) return false;
-         node.isEndOfWord = false;
-         info.deleted = true;
-         return node.children.size === 0; // should only delete if no children
-      }
+      let deleted = false;
 
-      const char = word[index];
-      const childNode = node.children.get(char);
-      if (!childNode) return false;
+      const helper = (node: TrieNode, word: string, index: number): boolean => {
+         if (index === word.length) {
+            if (!node.isEndOfWord) return false;
+            node.isEndOfWord = false;
+            deleted = true;
 
-      const shouldDeleteChild = this._deleteHelper(
-         childNode,
-         word,
-         index + 1,
-         info
-      );
+            // should only delete if no children
+            return node.children.size === 0;
+         }
 
-      if (shouldDeleteChild) {
-         node.children.delete(char);
-         info.deleted = true;
-         return node.children.size === 0 && !node.isEndOfWord;
-      }
+         const char = word[index];
+         const childNode = node.children.get(char);
+         if (!childNode) return false;
 
-      return false;
+         const shouldDeleteChild = helper(childNode, word, index + 1);
+         if (shouldDeleteChild) {
+            node.children.delete(char);
+            deleted = true;
+            return node.children.size === 0 && !node.isEndOfWord;
+         }
+
+         return false;
+      };
+
+      helper(this._root, word, 0);
+
+      return deleted;
    }
 
    /**
@@ -175,6 +169,7 @@ export class Trie {
 
       return this._collectWords(current, prefix);
    }
+
    private _collectWords(node: TrieNode, prefix: string): string[] {
       const words: string[] = [];
       if (node.isEndOfWord) {
