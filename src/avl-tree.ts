@@ -253,8 +253,8 @@ export class AVLTree<T = number> {
     *
     * @returns {AVLTree<T>} A new instance of AVLTree.
     */
-   static fromArray<T>(array: T[]): AVLTree<T> {
-      const avlTree = new AVLTree<T>();
+   static fromArray<T>(array: T[], comparator?: Comparator<T>): AVLTree<T> {
+      const avlTree = new AVLTree<T>(comparator);
       array.forEach((data) => avlTree.insert(data));
       return avlTree;
    }
@@ -270,8 +270,11 @@ export class AVLTree<T = number> {
     *
     * @returns {AVLTree<T>} A new instance of AVLTree.
     */
-   static fromSortedArray<T>(array: T[]): AVLTree<T> {
-      const avlTree = new AVLTree<T>();
+   static fromSortedArray<T>(
+      array: T[],
+      comparator?: Comparator<T>
+   ): AVLTree<T> {
+      const avlTree = new AVLTree<T>(comparator);
 
       const helper = (left: number, right: number): AVLTreeNode<T> | null => {
          if (left > right) return null;
