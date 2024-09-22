@@ -280,3 +280,34 @@ describe("AVLTree with Custom Comparator", () => {
       expect(objectTree.max()).toEqual({ key: 10 });
    });
 });
+
+describe("AVLTree Cloning", () => {
+   let tree: AVLTree<number>;
+
+   beforeEach(() => {
+      tree = new AVLTree<number>();
+      [10, 20, 30, 5, 3].forEach((value) => tree.insert(value));
+   });
+
+   test("should clone the tree with the same values", () => {
+      const clonedTree = tree.clone();
+      expect([...clonedTree]).toEqual([...tree]);
+   });
+
+   test("should not be the same instance", () => {
+      const clonedTree = tree.clone();
+      expect(clonedTree).not.toBe(tree);
+   });
+
+   test("should not affect the cloned tree when modifying the original tree", () => {
+      const clonedTree = tree.clone();
+      tree.delete(10);
+      expect([...clonedTree]).toEqual([3, 5, 10, 20, 30]);
+   });
+
+   test("should handle cloning an empty tree", () => {
+      const emptyTree = new AVLTree<number>();
+      const clonedEmptyTree = emptyTree.clone();
+      expect(clonedEmptyTree.isEmpty()).toBe(true);
+   });
+});

@@ -122,6 +122,32 @@ export class AVLTree<T = number> {
    }
 
    /**
+    * Clones the tree.
+    *
+    * @timeComplexity `O(n)`
+    */
+   clone(): AVLTree<T> {
+      const cloneNode = (
+         node: AVLTreeNode<T> | null
+      ): AVLTreeNode<T> | null => {
+         if (node === null) return null;
+
+         const newNode = new AVLTreeNode(node.value);
+         newNode.left = cloneNode(node.left);
+         newNode.right = cloneNode(node.right);
+         newNode.height = node.height;
+
+         return newNode;
+      };
+
+      const newTree = new AVLTree<T>(this._comparator);
+      newTree._root = cloneNode(this._root);
+      newTree._size = this._size;
+
+      return newTree;
+   }
+
+   /**
     * Converts the tree to a sorted array.
     *
     * @timeComplexity `O(n)`
