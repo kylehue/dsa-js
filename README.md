@@ -15,6 +15,7 @@
   - [Quadtree](#quadtree)
   - [LRUCache](#lrucache)
   - [SegmentTree](#segmenttree)
+  - [AVLTree](#avltree)
   - [Contributing](#contributing)
 
 ## Installation
@@ -31,6 +32,7 @@ https://cdn.jsdelivr.net/npm/my-dsa/dist/umd/index.js
 The library will be accessible through the global name `mydsa`.
 
 ## LinkedList
+A Linked List is a way to store a sequence of items where each item points to the next one.
 ```ts
 import { LinkedList } from "my-dsa";
 
@@ -85,6 +87,7 @@ for (let node of list) {
 ```
 
 ## Queue
+A Queue is a simple way to store items in order, like a line of people. You add items at the back (enqueue) and remove them from the front (dequeue).
 ```ts
 import { Queue } from "my-dsa";
 
@@ -141,6 +144,7 @@ deque.dequeueBack();
 ```
 
 ## Heap
+A Heap is a type of tree structure that helps manage a collection of items, where the lowest/highest priority item can be instantly accessed.
 ```ts
 import { Heap } from "my-dsa";
 
@@ -181,6 +185,7 @@ let array = heap.toArray();
 ```
 
 ## DisjointSet
+Disjoint Set or Union-Find is useful for efficiently managing and merging groups of connected elements, making it ideal for tasks like tracking connected components in graphs.
 ```ts
 import { DisjointSet } from "my-dsa";
 
@@ -205,6 +210,7 @@ let size = ds.size();
 ```
 
 ## Trie
+This is ideal for managing a dynamic set of strings, allowing for efficient prefix searches, autocomplete features, and maybe spell-checking.
 ```ts
 import { Trie } from "my-dsa";
 
@@ -241,6 +247,7 @@ let suggestions = trie.autocomplete("app");
 ```
 
 ## Quadtree
+This is useful for querying objects in 2D space, allowing efficient spatial searches like finding nearby objects.
 ```ts
 import { Quadtree } from "my-dsa";
 
@@ -297,6 +304,7 @@ for (let [key, value] of cache) {
 ```
 
 ## SegmentTree
+This is useful if you want to query sub-array operations in logarithmic time.
 ```ts
 import { SegmentTree } from "my-dsa";
 
@@ -315,6 +323,55 @@ let minTree = new SegmentTree([3, 5, 2, 7, 1], (a, b) => Math.min(a, b));
 // Query the minimum over a range
 // Note that we have to set the initial value of result to Infinity
 let min = minTree.query(1, 3, Infinity); // 2
+```
+
+## AVLTree
+It's just a variant of binary search tree but with self-balancing feature which makes it more efficient.
+```ts
+import { AVLTree } from "my-dsa";
+
+// Create an AVLTree
+let avlTree = new AVLTree();
+
+// or create an AVLTree with custom comparator
+avlTree = new AVLTree((a, b) => a - b);
+
+// Insert values into the tree
+avlTree.insert(30);
+
+// Check the size of the tree
+let size = avlTree.size();
+
+// Find the minimum and maximum values
+let min = avlTree.min();
+let max = avlTree.max();
+
+// Delete a value from the tree
+avlTree.delete(20);
+
+// Check if the tree is empty
+let isEmpty = avlTree.isEmpty();
+
+// Traverse the tree in sorted order
+let values: number[] = [];
+avlTree.traverse((value) => {
+    values.push(value);
+
+    // Continue traversing left child
+    // Can be: "left", "right", "both", or undefined
+    return "left";
+});
+
+// Create a tree from an array
+let newTree = AVLTree.fromArray([50, 30, 70, 20, 40]);
+
+// Create a tree from a sorted array (faster)
+let newTree = AVLTree.fromSortedArray([1, 2, 3, 4]);
+
+// Loop (in-order)
+for (let value of avlTree) {
+    console.log(value);
+}
 ```
 
 ## Contributing

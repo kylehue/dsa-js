@@ -1,4 +1,4 @@
-import { Heap, Queue, Deque, Trie, DisjointSet } from "../src/index";
+import { Heap, Queue, Deque, Trie, DisjointSet, AVLTree } from "../src/index";
 
 const pq = new Heap<number>();
 for (let i = 0; i < 100; i++) {
@@ -24,3 +24,14 @@ console.log(trie.autocomplete("app"));
 const ds = new DisjointSet<string>();
 ds.union("a", "b");
 console.log(ds.find("a"));
+
+const avlTree = new AVLTree<number>((x) => x);
+avlTree.insert(1);
+avlTree.insert(2);
+avlTree.insert(3);
+avlTree.insert(4);
+avlTree.insert(5);
+avlTree.insert(6);
+avlTree.insert(7);
+
+console.log(avlTree);
