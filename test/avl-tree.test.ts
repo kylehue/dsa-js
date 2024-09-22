@@ -228,3 +228,55 @@ describe("AVLTree", () => {
       expect(avlTree.max()).toBe(1000);
    });
 });
+
+const descendingComparator = (a: number, b: number) => b - a;
+describe("AVLTree with Custom Comparator", () => {
+   let avlTree: AVLTree<number>;
+
+   beforeEach(() => {
+      avlTree = new AVLTree(descendingComparator);
+   });
+
+   test("should insert values and maintain custom order (descending)", () => {
+      avlTree.insert(10);
+      avlTree.insert(20);
+      avlTree.insert(30);
+
+      expect(avlTree.size()).toBe(3);
+      expect(avlTree.min()).toBe(30);
+      expect(avlTree.max()).toBe(10);
+   });
+
+   test("should maintain balance with custom comparator", () => {
+      avlTree.insert(50);
+      avlTree.insert(30);
+      avlTree.insert(70);
+      expect(avlTree.size()).toBe(3);
+      expect(avlTree.min()).toBe(70);
+      expect(avlTree.max()).toBe(30);
+   });
+
+   test("should correctly delete values with custom comparator", () => {
+      avlTree.insert(40);
+      avlTree.insert(20);
+      avlTree.insert(60);
+      avlTree.delete(40);
+      expect(avlTree.size()).toBe(2);
+      expect(avlTree.min()).toBe(60);
+      expect(avlTree.max()).toBe(20);
+   });
+
+   test("should handle complex objects with custom comparator", () => {
+      const comparator = (a: { key: number }, b: { key: number }) =>
+         a.key - b.key;
+      const objectTree = new AVLTree(comparator);
+
+      objectTree.insert({ key: 5 });
+      objectTree.insert({ key: 10 });
+      objectTree.insert({ key: 1 });
+
+      expect(objectTree.size()).toBe(3);
+      expect(objectTree.min()).toEqual({ key: 1 });
+      expect(objectTree.max()).toEqual({ key: 10 });
+   });
+});
