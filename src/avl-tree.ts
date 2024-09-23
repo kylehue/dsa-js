@@ -52,9 +52,10 @@ export class AVLTree<T = number> {
     *
     * @timeComplexity `O(log(n))`
     *
-    * @returns True if the value was found and deleted, otherwise false.
+    * @returns The new successor node. Undefined if node wasn't found.
     */
-   delete(value: T): boolean {
+   delete(value: T): AVLTreeNode<T> | undefined {
+      let newSuccessor: AVLTreeNode<T> | undefined = undefined;
       let isDeleted = false;
 
       const helper = (
@@ -68,8 +69,12 @@ export class AVLTree<T = number> {
 
             // If the node to be deleted only has 1 child, then
             // return that child as the successor.
-            if (node.left() === undefined) return node.right();
-            if (node.right() === undefined) return node.left();
+            if (node.left() === undefined) {
+               return (newSuccessor = node.right());
+            }
+            if (node.right() === undefined) {
+               return (newSuccessor = node.left());
+            }
 
             // If node has 2 children, get the inorder successor.
             // For inorder successor, it can be both ways but let's choose
@@ -78,6 +83,8 @@ export class AVLTree<T = number> {
             while (successor.left() !== undefined) {
                successor = successor.left()!;
             }
+
+            newSuccessor = successor;
 
             // Copy the inorder successor's data to this node
             changeValue(node, successor.value());
@@ -101,7 +108,7 @@ export class AVLTree<T = number> {
       this._root = helper(this._root);
 
       if (isDeleted) this._size--;
-      return isDeleted;
+      return newSuccessor;
    }
 
    /**

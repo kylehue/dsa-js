@@ -43,13 +43,13 @@ describe("AVLTree", () => {
       expect(avlTree.min()).toBe(10);
       expect(avlTree.max()).toBe(30);
 
-      expect(avlTree.delete(30)).toBeTruthy();
+      expect(avlTree.delete(30)).toBeFalsy(); // 30 has no successor
       expect(avlTree.height()).toBe(2);
       expect(avlTree.size()).toBe(2);
       expect(avlTree.min()).toBe(10);
       expect(avlTree.max()).toBe(20);
 
-      expect(avlTree.delete(10)).toBeTruthy();
+      expect(avlTree.delete(10)).toBeFalsy(); // 10 has no successor
       expect(avlTree.height()).toBe(1);
       expect(avlTree.size()).toBe(1);
       expect(avlTree.min()).toBe(20);
@@ -58,6 +58,15 @@ describe("AVLTree", () => {
       expect(avlTree.delete(1234)).toBeFalsy();
       expect(avlTree.delete(10)).toBeFalsy();
       expect(avlTree.delete(30)).toBeFalsy();
+   });
+   
+   test("should pass successor after deletion", () => {
+      avlTree.insert(10);
+      avlTree.insert(20);
+      avlTree.insert(15);
+      expect(avlTree.delete(15)?.value()).toBe(20);
+      expect(avlTree.size()).toBe(2);
+      expect(avlTree.max()).toBe(20);
    });
 
    test("should delete a node with one child", () => {
@@ -140,7 +149,7 @@ describe("AVLTree", () => {
    });
 
    test("should handle deleting from an empty tree", () => {
-      expect(avlTree.delete(10)).toBe(false);
+      expect(avlTree.delete(10)).toBeUndefined;
       expect(avlTree.size()).toBe(0);
    });
 
