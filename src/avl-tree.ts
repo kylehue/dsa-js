@@ -1,7 +1,7 @@
 import { Comparator, defaultComparator } from "./utils/comparator";
 
 export class AVLTree<T = number> {
-   private _root: AVLTreeNode<T> | null = null;
+   private _root: AVLTreeNode<T> | undefined = undefined;
    private _size: number = 0;
    private _comparator: Comparator<T> = defaultComparator;
 
@@ -24,20 +24,20 @@ export class AVLTree<T = number> {
    insert(value: T): void {
       const newNode = new AVLTreeNode(value);
 
-      const helper = (node: AVLTreeNode<T> | null): AVLTreeNode<T> => {
-         if (node === null) {
+      const helper = (node: AVLTreeNode<T> | undefined): AVLTreeNode<T> => {
+         if (node === undefined) {
             node = newNode;
             return node;
          }
 
-         if (this._comparator(value, node.value) < 0) {
-            node.left = helper(node.left);
+         if (this._comparator(value, node.value()) < 0) {
+            changeLeft(node, helper(node.left()));
          } else {
-            node.right = helper(node.right);
+            changeRight(node, helper(node.right()));
          }
 
          // Update height and rebalance
-         node.height = 1 + this._calculateHeight(node);
+         changeHeight(node, 1 + this._calculateHeight(node));
          return this._balance(node);
       };
 
@@ -57,42 +57,44 @@ export class AVLTree<T = number> {
    delete(value: T): boolean {
       let isDeleted = false;
 
-      const helper = (node: AVLTreeNode<T> | null): AVLTreeNode<T> | null => {
-         if (node === null) return null;
+      const helper = (
+         node: AVLTreeNode<T> | undefined
+      ): AVLTreeNode<T> | undefined => {
+         if (node === undefined) return undefined;
 
          // If the node to delete has been found:
-         if (value === node.value) {
+         if (value === node.value()) {
             isDeleted = true;
 
             // If the node to be deleted only has 1 child, then
             // return that child as the successor.
-            if (node.left === null) return node.right;
-            if (node.right === null) return node.left;
+            if (node.left() === undefined) return node.right();
+            if (node.right() === undefined) return node.left();
 
             // If node has 2 children, get the inorder successor.
             // For inorder successor, it can be both ways but let's choose
             // the lowest value in the right child.
-            let successor = node.right;
-            while (successor.left !== null) {
-               successor = successor.left;
+            let successor = node.right()!;
+            while (successor.left() !== undefined) {
+               successor = successor.left()!;
             }
 
             // Copy the inorder successor's data to this node
-            node.value = successor.value;
+            changeValue(node, successor.value());
 
             // Delete the inorder successor
-            node.right = helper(node.right);
+            changeRight(node, helper(node.right()));
          }
 
          // If node hasn't been found, recursively find the node to delete
-         else if (this._comparator(value, node.value) < 0) {
-            node.left = helper(node.left);
+         else if (this._comparator(value, node.value()) < 0) {
+            changeLeft(node, helper(node.left()));
          } else {
-            node.right = helper(node.right);
+            changeRight(node, helper(node.right()));
          }
 
          // Update height and rebalance
-         node.height = 1 + this._calculateHeight(node);
+         changeHeight(node, 1 + this._calculateHeight(node));
          return this._balance(node);
       };
 
@@ -117,7 +119,7 @@ export class AVLTree<T = number> {
     * @timeComplexity `O(1)`
     */
    clear(): void {
-      this._root = null;
+      this._root = undefined;
       this._size = 0;
    }
 
@@ -128,14 +130,15 @@ export class AVLTree<T = number> {
     */
    clone(): AVLTree<T> {
       const cloneNode = (
-         node: AVLTreeNode<T> | null
-      ): AVLTreeNode<T> | null => {
-         if (node === null) return null;
+         node: AVLTreeNode<T> | undefined
+      ): AVLTreeNode<T> | undefined => {
+         if (node === undefined) return undefined;
 
-         const newNode = new AVLTreeNode(node.value);
-         newNode.left = cloneNode(node.left);
-         newNode.right = cloneNode(node.right);
-         newNode.height = node.height;
+         const newNode = new AVLTreeNode(node.value());
+
+         changeLeft(newNode, cloneNode(node.left()));
+         changeRight(newNode, cloneNode(node.right()));
+         changeHeight(newNode, node.height());
 
          return newNode;
       };
@@ -166,12 +169,12 @@ export class AVLTree<T = number> {
     * @returns The minimum data or void if the tree is empty.
     */
    min(): T | undefined {
-      if (this._root === null) return;
+      if (this._root === undefined) return;
       let current = this._root;
-      while (current.left !== null) {
-         current = current.left;
+      while (current.left() !== undefined) {
+         current = current.left()!;
       }
-      return current.value;
+      return current.value();
    }
 
    /**
@@ -182,12 +185,12 @@ export class AVLTree<T = number> {
     * @returns The maximum data or void if the tree is empty.
     */
    max(): T | undefined {
-      if (this._root === null) return;
+      if (this._root === undefined) return;
       let current = this._root;
-      while (current.right !== null) {
-         current = current.right;
+      while (current.right() !== undefined) {
+         current = current.right()!;
       }
-      return current.value;
+      return current.value();
    }
 
    /**
@@ -223,42 +226,17 @@ export class AVLTree<T = number> {
       return this._getHeight(this._root);
    }
 
-   /**
-    * Traverses the tree in a depth-first search manner.
-    *
-    * @param callback A callback function that gives the value as a parameter.
-    *
-    * The function should return:
-    * - `"left"` to continue traversing to the left child.
-    * - `"right"` to continue traversing to the right child.
-    * - `"both"` to continue traversing to both children.
-    * - `undefined` if no further traversal is desired.
-    *
-    * @timeComplexity `O(log(n))`
-    */
-   traverse(callback: (value: T) => "left" | "right" | "both" | void): void {
-      if (this._root === null) return;
-
-      function dfs(node: AVLTreeNode<T> | null) {
-         if (node === null) return;
-         let next = callback(node.value);
-         if (next === "left" || next === "right") {
-            dfs(node[next]);
-         } else if (next === "both") {
-            dfs(node.left);
-            dfs(node.right);
-         }
-      }
-
-      dfs(this._root);
+   root(): AVLTreeNode<T> | undefined {
+      if (!this._root) return undefined;
+      return this._root;
    }
 
    *values(): Generator<T> {
-      function* inorder(node: AVLTreeNode<T> | null): Generator<T> {
-         if (node === null) return;
-         yield* inorder(node.left);
-         yield node.value;
-         yield* inorder(node.right);
+      function* inorder(node: AVLTreeNode<T> | undefined): Generator<T> {
+         if (node === undefined) return;
+         yield* inorder(node.left());
+         yield node.value();
+         yield* inorder(node.right());
       }
 
       yield* inorder(this._root);
@@ -276,7 +254,7 @@ export class AVLTree<T = number> {
     *
     * @timeComplexity `O(n * log(n))`
     *
-    * @returns {AVLTree<T>} A new instance of AVLTree.
+    * @returns A new instance of AVLTree.
     */
    static fromArray<T>(array: T[], comparator?: Comparator<T>): AVLTree<T> {
       const avlTree = new AVLTree<T>(comparator);
@@ -292,7 +270,7 @@ export class AVLTree<T = number> {
     *
     * @timeComplexity `O(n)`
     *
-    * @returns {AVLTree<T>} A new instance of AVLTree.
+    * @returns A new instance of AVLTree.
     */
    static fromSortedArray<T>(
       array: T[],
@@ -300,14 +278,17 @@ export class AVLTree<T = number> {
    ): AVLTree<T> {
       const avlTree = new AVLTree<T>(comparator);
 
-      const helper = (left: number, right: number): AVLTreeNode<T> | null => {
-         if (left > right) return null;
+      const helper = (
+         left: number,
+         right: number
+      ): AVLTreeNode<T> | undefined => {
+         if (left > right) return undefined;
 
          let mid = (left + right) >> 1;
          let root = new AVLTreeNode(array[mid]);
-         root.left = helper(left, mid - 1);
-         root.right = helper(mid + 1, right);
-         root.height = 1 + avlTree._calculateHeight(root);
+         changeLeft(root, helper(left, mid - 1));
+         changeRight(root, helper(mid + 1, right));
+         changeHeight(root, 1 + avlTree._calculateHeight(root));
 
          return root;
       };
@@ -325,8 +306,9 @@ export class AVLTree<T = number> {
       if (factor > 1) {
          // If the left child is right-heavy,
          // then we have to rotate the left child to the left.
-         if (node.left !== null && this._getBalanceFactor(node.left) < 0) {
-            node.left = this._rotateLeft(node.left);
+         let left = node.left();
+         if (left !== undefined && this._getBalanceFactor(left) < 0) {
+            changeLeft(node, this._rotateLeft(left));
          }
 
          return this._rotateRight(node);
@@ -336,8 +318,9 @@ export class AVLTree<T = number> {
       else if (factor < -1) {
          // If the right child if left-heavy,
          // then we have to rotate the right child to the right.
-         if (node.right !== null && this._getBalanceFactor(node.right) > 0) {
-            node.right = this._rotateRight(node.right);
+         let right = node.right();
+         if (right !== undefined && this._getBalanceFactor(right) > 0) {
+            changeRight(node, this._rotateRight(right!));
          }
 
          return this._rotateLeft(node);
@@ -347,56 +330,102 @@ export class AVLTree<T = number> {
    }
 
    private _rotateLeft(node: AVLTreeNode<T>): AVLTreeNode<T> {
-      if (node.right === null) return node;
+      let right = node.right();
+      if (right === undefined) return node;
 
-      let right = node.right;
-      node.right = right.left;
-      right.left = node;
+      changeRight(node, right.left());
+      changeLeft(right, node);
 
-      node.height = 1 + this._calculateHeight(node);
-      right.height = 1 + this._calculateHeight(right);
+      changeHeight(node, 1 + this._calculateHeight(node));
+      changeHeight(right, 1 + this._calculateHeight(right));
 
       return right;
    }
 
    private _rotateRight(node: AVLTreeNode<T>): AVLTreeNode<T> {
-      if (node.left === null) return node;
+      let left = node.left();
+      if (left === undefined) return node;
 
-      let left = node.left;
-      node.left = left.right;
-      left.right = node;
+      changeLeft(node, left.right());
+      changeRight(left, node);
 
-      node.height = 1 + this._calculateHeight(node);
-      left.height = 1 + this._calculateHeight(left);
+      changeHeight(node, 1 + this._calculateHeight(node));
+      changeHeight(left, 1 + this._calculateHeight(left));
 
       return left;
    }
 
-   private _getBalanceFactor(node: AVLTreeNode<T> | null): number {
-      if (node === null) return 0;
-      return this._getHeight(node.left) - this._getHeight(node.right);
+   private _getBalanceFactor(node: AVLTreeNode<T> | undefined): number {
+      if (node === undefined) return 0;
+      return this._getHeight(node.left()) - this._getHeight(node.right());
    }
 
-   private _calculateHeight(node: AVLTreeNode<T> | null): number {
-      if (node === null) return 0;
-      return Math.max(this._getHeight(node.left), this._getHeight(node.right));
+   private _calculateHeight(node: AVLTreeNode<T> | undefined): number {
+      if (node === undefined) return 0;
+      return Math.max(
+         this._getHeight(node.left()),
+         this._getHeight(node.right())
+      );
    }
 
-   private _getHeight(node: AVLTreeNode<T> | null): number {
-      if (node === null) return 0;
-      return node.height;
+   private _getHeight(node: AVLTreeNode<T> | undefined): number {
+      if (node === undefined) return 0;
+      return node.height();
    }
 }
 
-class AVLTreeNode<T> {
-   public value: T;
-   public left: AVLTreeNode<T> | null = null;
-   public right: AVLTreeNode<T> | null = null;
-   public height: number = 1;
+export class AVLTreeNode<T> {
+   private _value: T;
+   private _left: AVLTreeNode<T> | undefined = undefined;
+   private _right: AVLTreeNode<T> | undefined = undefined;
+   private _height: number = 1;
 
    constructor(value: T) {
-      this.value = value;
+      this._value = value;
+   }
+
+   left(): AVLTreeNode<T> | undefined {
+      return this._left;
+   }
+
+   right(): AVLTreeNode<T> | undefined {
+      return this._right;
+   }
+
+   value(): T {
+      return this._value;
+   }
+
+   height(): number {
+      return this._height;
    }
 }
 
 export type AVLTreeValueMapper<T> = (data: T) => number;
+
+/*
+ * Helper functions to change node properties without making typescript mad.
+ */
+
+function changeLeft<T>(node: AVLTreeNode<T>, left: AVLTreeNode<T> | undefined) {
+   // @ts-ignore
+   node._left = left;
+}
+
+function changeRight<T>(
+   node: AVLTreeNode<T>,
+   right: AVLTreeNode<T> | undefined
+) {
+   // @ts-ignore
+   node._right = right;
+}
+
+function changeHeight<T>(node: AVLTreeNode<T>, height: number) {
+   // @ts-ignore
+   node._height = height;
+}
+
+function changeValue<T>(node: AVLTreeNode<T>, value: T) {
+   // @ts-ignore
+   node._value = value;
+}

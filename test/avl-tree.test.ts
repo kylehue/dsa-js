@@ -85,45 +85,6 @@ describe("AVLTree", () => {
       expect(avlTree.isEmpty()).toBeTruthy();
    });
 
-   test("should traverse the tree (left)", () => {
-      //       4
-      //     /   \
-      //    2     6
-      //   / \   / \
-      //  1   3 5   7
-      avlTree.insert(1);
-      avlTree.insert(2);
-      avlTree.insert(3);
-      avlTree.insert(4);
-      avlTree.insert(5);
-      avlTree.insert(6);
-      avlTree.insert(7);
-
-      // test left
-      let values: number[] = [];
-      avlTree.traverse((value) => {
-         values.push(value);
-         return "left";
-      });
-      expect(values.sort()).toEqual([1, 2, 4].sort());
-
-      // test right
-      values = [];
-      avlTree.traverse((value) => {
-         values.push(value);
-         return "right";
-      });
-      expect(values.sort()).toEqual([4, 6, 7].sort());
-
-      // test both
-      values = [];
-      avlTree.traverse((value) => {
-         values.push(value);
-         return "both";
-      });
-      expect(values.sort()).toEqual([1, 2, 3, 4, 5, 6, 7].sort());
-   });
-
    test("should rebuild the tree from a sorted array", () => {
       avlTree.insert(30);
       avlTree.insert(10);
@@ -209,15 +170,6 @@ describe("AVLTree", () => {
 
       avlTree.delete(10);
       expect(avlTree.size()).toBe(2);
-   });
-
-   test("should not crash when traversing an empty tree", () => {
-      let values: number[] = [];
-      avlTree.traverse((value) => {
-         values.push(value);
-         return "both";
-      });
-      expect(values).toEqual([]);
    });
 
    test("should handle large dataset efficiently", () => {

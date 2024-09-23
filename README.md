@@ -352,15 +352,8 @@ avlTree.delete(20);
 // Check if the tree is empty
 let isEmpty = avlTree.isEmpty();
 
-// Traverse the tree in sorted order
-let values: number[] = [];
-avlTree.traverse((value) => {
-    values.push(value);
-
-    // Continue traversing left child
-    // Can be: "left", "right", "both", or undefined
-    return "left";
-});
+// Access the root
+let root = avlTree.root();
 
 // Create a tree from an array
 let newTree = AVLTree.fromArray([50, 30, 70, 20, 40]);
