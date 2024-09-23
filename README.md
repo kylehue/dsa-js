@@ -16,6 +16,7 @@
   - [LRUCache](#lrucache)
   - [SegmentTree](#segmenttree)
   - [AVLTree](#avltree)
+  - [IntervalTree](#intervaltree)
   - [Contributing](#contributing)
 
 ## Installation
@@ -299,7 +300,7 @@ let size = cache.size();
 
 // Support for-of iteration to loop over entries
 for (let [key, value] of cache) {
-    console.log(`${key}: ${value}`);
+   console.log(`${key}: ${value}`);
 }
 ```
 
@@ -363,7 +364,56 @@ let newTree = AVLTree.fromSortedArray([1, 2, 3, 4]);
 
 // Loop (in-order)
 for (let value of avlTree) {
-    console.log(value);
+   console.log(value);
+}
+```
+
+## IntervalTree
+A data structure for managing intervals and querying overlapping intervals.
+```ts
+import { IntervalTree } from "my-dsa";
+
+type IntervalObject = {
+  name: string;
+  interval: [number, number];
+};
+
+// Create instance
+let intervalTree = new IntervalTree<IntervalObject>((data) => data.interval);
+
+// Insert intervals into the tree
+let sampleData: IntervalObject = { name: "sample", interval: [10, 20] };
+intervalTree.insert(sampleData);
+
+// Query overlapping intervals
+let overlappingIntervals = intervalTree.query(12, 22);
+
+// Check the size of the tree (number of intervals)
+let size = intervalTree.size();
+
+// Delete an interval from the tree
+intervalTree.delete(sampleData);
+
+// Check if the tree is empty
+let isEmpty = intervalTree.isEmpty();
+
+// Access the root
+let root = intervalTree.root();
+
+// Clear the tree
+intervalTree.clear();
+
+// Create a tree from an array of intervals
+let tree = IntervalTree.fromArray<IntervalObject>(array, rangeMapper);
+
+// Query intervals that overlap a specific range
+for (let interval of intervalTree.query(10, 25)) {
+   console.log(interval.name, interval.interval);
+}
+
+// For-of loop
+for (let interval of intervalTree) {
+   console.log(interval.name, interval.interval);
 }
 ```
 

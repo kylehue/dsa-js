@@ -1,4 +1,12 @@
-import { Heap, Queue, Deque, Trie, DisjointSet, AVLTree } from "../src/index";
+import {
+   Heap,
+   Queue,
+   Deque,
+   Trie,
+   DisjointSet,
+   AVLTree,
+   IntervalTree,
+} from "../src/index";
 
 const pq = new Heap<number>();
 for (let i = 0; i < 100; i++) {
@@ -35,3 +43,16 @@ avlTree.insert(6);
 avlTree.insert(7);
 
 console.log(avlTree);
+
+const intervalTree = new IntervalTree<[number, number]>((x) => [x[0], x[1]]);
+let ref: [number, number] = [30, 40];
+intervalTree.insert([15, 20]);
+intervalTree.insert([10, 30]);
+intervalTree.insert([5, 20]);
+intervalTree.insert([12, 15]);
+intervalTree.insert([17, 19]);
+intervalTree.insert(ref);
+
+intervalTree.delete(ref);
+
+console.log(intervalTree, [...intervalTree.rangeQuery(15, 31)]);
