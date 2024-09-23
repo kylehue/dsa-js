@@ -52,7 +52,8 @@ export class AVLTree<T = number> {
     *
     * @timeComplexity `O(log(n))`
     *
-    * @returns The new successor node. Undefined if node wasn't found.
+    * @returns The new successor node. This can also be `undefined` if
+    * the deleted node doesn't have a successor or there was no deleted node.
     */
    delete(value: T): AVLTreeNode<T> | undefined {
       let newSuccessor: AVLTreeNode<T> | undefined = undefined;
