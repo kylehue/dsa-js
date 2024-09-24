@@ -67,10 +67,19 @@ describe("IntervalTree", () => {
       expect([...clone]).toEqual([...tree]);
    });
 
-   it("should handle touching intervals", () => {
+   it("should handle exclusive intervals", () => {
       const result = tree.query(5, 10);
       const names = result.map((obj) => obj.name);
       expect(names).not.toContain("B");
+      expect(names).not.toContain("A");
+      expect(names).toContain("F");
+   });
+
+   it("should handle inclusive intervals", () => {
+      const result = tree.query(5, 10, true);
+      const names = result.map((obj) => obj.name);
+      expect(names).toContain("B");
+      expect(names).toContain("A");
       expect(names).toContain("F");
    });
 

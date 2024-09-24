@@ -58,20 +58,22 @@ export class IntervalTree<T = any> {
     *
     * @param lower The lower bound of the range.
     * @param upper The upper bound of the range.
+    * @param inclusive Set to `true` to include intervals that doesn't
+    * overlap but touch the given lower or upper bound. Default is `false`.
     *
     * @timeComplexity `O(k + log(n))` where `k` is the number of intervals
     * that overlap within the given range.
     *
     * @returns Array of data whose intervals overlap with the range.
     */
-   query(lower: number, upper: number): T[] {
+   query(lower: number, upper: number, inclusive?: boolean): T[] {
       if (lower > upper) {
          throw new RangeError(
             "Lower bound must be less than the higher bound."
          );
       }
 
-      return [...this.rangeQuery(lower, upper)];
+      return [...this.rangeQuery(lower, upper, inclusive)];
    }
 
    /**
@@ -145,13 +147,19 @@ export class IntervalTree<T = any> {
     *
     * @param lower The lower bound of the range.
     * @param upper The upper bound of the range.
+    * @param inclusive Set to `true` to include intervals that doesn't
+    * overlap but touch the given lower or upper bound. Default is `false`.
     *
     * @timeComplexity `O(k + log(n))` where `k` is the number of intervals
     * that overlap within the given range.
     *
     * @yields The data of intervals overlapping with the range.
     */
-   *rangeQuery(lower: number, upper: number): Generator<T> {
+   *rangeQuery(
+      lower: number,
+      upper: number,
+      inclusive?: boolean
+   ): Generator<T> {
       if (lower > upper) {
          throw new RangeError(
             "Lower bound must be less than the higher bound."
@@ -165,7 +173,12 @@ export class IntervalTree<T = any> {
 
          const { lowerBound, upperBound, data } = node.value();
 
-         if (isOverlapping(lower, upper, lowerBound, upperBound)) {
+         let isOverlappingInclusive =
+            inclusive && (lowerBound === upper || upperBound === lower);
+         if (
+            isOverlappingInclusive ||
+            isOverlapping(lower, upper, lowerBound, upperBound)
+         ) {
             yield data;
          }
 
@@ -191,12 +204,12 @@ export class IntervalTree<T = any> {
 
    /**
     * Constructs an interval tree from an array of data.
-    * 
+    *
     * @param array The array of data.
     * @param rangeMapper The function to map each data item to its interval.
-    * 
+    *
     * @timeComplexity `O(n * log(n))`
-    * 
+    *
     * @returns The newly constructed interval tree.
     */
    static fromArray<T>(
@@ -210,9 +223,9 @@ export class IntervalTree<T = any> {
 
    /**
     * Recomputes the max upper bound of each node in the path to the given data.
-    * 
+    *
     * @param data The data for which to recompute the max upper bound.
-    * 
+    *
     * @timeComplexity `O(log(n))`
     */
    private _recomputeMaxUpperBound(data: T) {
@@ -229,9 +242,9 @@ export class IntervalTree<T = any> {
    /**
     * Traverses the tree to find the node associated with the provided data.
     * @param data The data to traverse to.
-    * 
+    *
     * @timeComplexity `O(log(n))`
-    * 
+    *
     * @yields Nodes along the path to the target node.
     */
    private *_traverseTo(data: T) {
