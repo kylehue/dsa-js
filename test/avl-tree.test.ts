@@ -136,16 +136,6 @@ describe("AVLTree", () => {
       expect(avlTree.isEmpty()).toBeTruthy();
    });
 
-   test("should rebuild the tree from a sorted array", () => {
-      avlTree.insert(30);
-      avlTree.insert(10);
-      avlTree.insert(20);
-      avlTree.rebuild();
-      expect(avlTree.size()).toBe(3);
-      expect(avlTree.min()).toBe(10);
-      expect(avlTree.max()).toBe(30);
-   });
-
    test("should create a tree from an array", () => {
       const array = [30, 10, 20, 40, 50];
       const tree = AVLTree.fromArray(array);

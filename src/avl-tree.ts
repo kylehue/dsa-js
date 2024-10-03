@@ -155,15 +155,6 @@ export class AVLTree<T = number> {
    }
 
    /**
-    * Rebuilds the tree.
-    *
-    * @timeComplexity `O(n)`
-    */
-   rebuild(): void {
-      this._root = AVLTree.fromSortedArray(this.toArray())._root;
-   }
-
-   /**
     * Clears all elements from the tree.
     *
     * @timeComplexity `O(1)`
