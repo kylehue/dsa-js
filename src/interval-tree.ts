@@ -142,6 +142,8 @@ export class IntervalTree<T = any> {
     *
     * @param lower The lower bound of the range.
     * @param upper The upper bound of the range.
+    * @param inclusive Set to `true` to check intervals that doesn't
+    * overlap but touch the given lower or upper bound. Default is `false`.
     *
     * @timeComplexity `O(log(n))`
     *
