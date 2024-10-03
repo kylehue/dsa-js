@@ -36,8 +36,7 @@ export class AVLTree<T = number> {
             changeRight(node, helper(node.right()));
          }
 
-         // Update height and rebalance
-         changeHeight(node, 1 + this._calculateHeight(node));
+         // Rebalance
          return this._balance(node);
       };
 
@@ -57,7 +56,6 @@ export class AVLTree<T = number> {
     */
    delete(value: T): AVLTreeNode<T> | undefined {
       let newSuccessor: AVLTreeNode<T> | undefined = undefined;
-      let isDeleted = false;
 
       const helper = (
          node: AVLTreeNode<T> | undefined
@@ -66,32 +64,47 @@ export class AVLTree<T = number> {
 
          // If the node to delete has been found:
          if (value === node.value()) {
-            isDeleted = true;
+            this._size--;
 
-            // If the node to be deleted only has 1 child, then
-            // return that child as the successor.
-            if (node.left() === undefined) {
-               return (newSuccessor = node.right());
+            let left = node.left();
+            let right = node.right();
+            if (left && right) {
+               // If node has 2 children, get the inorder successor.
+               // For inorder successor, it can be both ways but let's choose
+               // the lowest value in the right child.
+               let successor = right;
+               let successorParent = undefined;
+               while (successor.left()) {
+                  successorParent = successor;
+                  successor = successor.left()!;
+               }
+
+               changeLeft(successor, left);
+               if (successor === right) {
+                  changeRight(right, right.right());
+               } else {
+                  changeRight(successor, right);
+               }
+
+               if (successorParent) {
+                  changeLeft(successorParent, undefined);
+               }
+
+               newSuccessor = successor;
+            } else if (left && !right) {
+               newSuccessor = left;
+            } else if (!left && right) {
+               newSuccessor = right;
+            } else {
+               newSuccessor = undefined;
             }
-            if (node.right() === undefined) {
-               return (newSuccessor = node.left());
-            }
 
-            // If node has 2 children, get the inorder successor.
-            // For inorder successor, it can be both ways but let's choose
-            // the lowest value in the right child.
-            let successor = node.right()!;
-            while (successor.left() !== undefined) {
-               successor = successor.left()!;
-            }
+            // Dettach the node
+            changeLeft(node, undefined);
+            changeRight(node, undefined);
 
-            newSuccessor = successor;
-
-            // Copy the inorder successor's data to this node
-            changeValue(node, successor.value());
-
-            // Delete the inorder successor
-            changeRight(node, helper(node.right()));
+            // Return new successor
+            return newSuccessor ? this._balance(newSuccessor) : newSuccessor;
          }
 
          // If node hasn't been found, recursively find the node to delete
@@ -101,14 +114,11 @@ export class AVLTree<T = number> {
             changeRight(node, helper(node.right()));
          }
 
-         // Update height and rebalance
-         changeHeight(node, 1 + this._calculateHeight(node));
          return this._balance(node);
       };
 
       this._root = helper(this._root);
 
-      if (isDeleted) this._size--;
       return newSuccessor;
    }
 
@@ -309,6 +319,9 @@ export class AVLTree<T = number> {
 
    private _balance(node: AVLTreeNode<T>): AVLTreeNode<T> {
       let factor = this._getBalanceFactor(node);
+
+      // Update height and rebalance
+      changeHeight(node, 1 + this._calculateHeight(node));
 
       // Left-heavy
       if (factor > 1) {

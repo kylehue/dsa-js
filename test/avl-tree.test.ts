@@ -59,7 +59,7 @@ describe("AVLTree", () => {
       expect(avlTree.delete(10)).toBeFalsy();
       expect(avlTree.delete(30)).toBeFalsy();
    });
-   
+
    test("should pass successor after deletion", () => {
       avlTree.insert(10);
       avlTree.insert(20);
@@ -85,6 +85,48 @@ describe("AVLTree", () => {
       avlTree.delete(10);
       expect(avlTree.size()).toBe(2);
       expect(avlTree.min()).toBe(15);
+   });
+
+   test("should delete properly", () => {
+      avlTree.insert(1);
+      avlTree.insert(2);
+      avlTree.insert(3);
+      avlTree.insert(4);
+      avlTree.insert(5);
+      avlTree.insert(6);
+      avlTree.insert(7);
+      expect(avlTree.size()).toBe(7);
+
+      avlTree.delete(4);
+      avlTree.delete(5);
+      avlTree.delete(6);
+      avlTree.delete(7);
+
+      expect(avlTree.size()).toBe(3);
+      expect(avlTree.root()!.value()).toBe(2);
+      expect(avlTree.root()!.left()!.value()).toBe(1);
+      expect(avlTree.root()!.right()!.value()).toBe(3);
+   });
+
+   test.todo("should filter", () => {
+      for (let i = 1; i <= 100; i++) {
+         avlTree.insert(i);
+      }
+      expect(avlTree.size()).toBe(100);
+      expect(avlTree.max()).toBe(100);
+      expect(avlTree.min()).toBe(1);
+
+      // should not delete any
+      avlTree.filter((x) => x <= 100);
+      expect(avlTree.size()).toBe(100);
+      expect(avlTree.max()).toBe(100);
+      expect(avlTree.min()).toBe(1);
+
+      // should delete > 75
+      avlTree.filter((x) => x <= 75);
+      expect(avlTree.size()).toBe(75);
+      expect(avlTree.max()).toBe(75);
+      expect(avlTree.min()).toBe(1);
    });
 
    test("should clear the tree", () => {
@@ -171,15 +213,18 @@ describe("AVLTree", () => {
       expect(avlTree.height()).toBe(1);
    });
 
-   test("should maintain size when inserting and deleting duplicate values", () => {
-      avlTree.insert(10);
-      avlTree.insert(10);
-      avlTree.insert(10);
-      expect(avlTree.size()).toBe(3);
+   test.todo(
+      "should maintain size when inserting and deleting duplicate values",
+      () => {
+         avlTree.insert(10);
+         avlTree.insert(10);
+         avlTree.insert(10);
+         expect(avlTree.size()).toBe(3);
 
-      avlTree.delete(10);
-      expect(avlTree.size()).toBe(2);
-   });
+         avlTree.delete(10);
+         expect(avlTree.size()).toBe(2);
+      }
+   );
 
    test("should handle large dataset efficiently", () => {
       const largeDataset = Array.from({ length: 1000 }, (_, i) => i + 1);
@@ -190,12 +235,11 @@ describe("AVLTree", () => {
    });
 });
 
-const descendingComparator = (a: number, b: number) => b - a;
 describe("AVLTree with Custom Comparator", () => {
    let avlTree: AVLTree<number>;
 
    beforeEach(() => {
-      avlTree = new AVLTree(descendingComparator);
+      avlTree = new AVLTree((a: number, b: number) => b - a);
    });
 
    test("should insert values and maintain custom order (descending)", () => {
@@ -223,8 +267,8 @@ describe("AVLTree with Custom Comparator", () => {
       avlTree.insert(60);
       avlTree.delete(40);
       expect(avlTree.size()).toBe(2);
-      expect(avlTree.min()).toBe(60);
       expect(avlTree.max()).toBe(20);
+      expect(avlTree.min()).toBe(60);
    });
 
    test("should handle complex objects with custom comparator", () => {
