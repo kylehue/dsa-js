@@ -1,29 +1,3 @@
-export class ListNode<T> {
-   public value: T;
-   private readonly _next: ListNode<T> | undefined = undefined;
-   private readonly _prev: ListNode<T> | undefined = undefined;
-   private readonly _isDisposed = false;
-
-   constructor(value: T) {
-      this.value = value;
-   }
-
-   next(): ListNode<T> | undefined {
-      return this._next;
-   }
-
-   prev(): ListNode<T> | undefined {
-      return this._prev;
-   }
-
-   isDisposed(): boolean {
-      return this._isDisposed;
-   }
-}
-
-/**
- * Represents a doubly linked list.
- */
 export class LinkedList<T = any> implements Iterable<ListNode<T>> {
    private _head: ListNode<T> | undefined = undefined;
    private _tail: ListNode<T> | undefined = undefined;
@@ -44,8 +18,8 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
          this._head = newNode;
          this._tail = newNode;
       } else {
-         changeNext(this._tail!, newNode);
-         changePrev(newNode, this._tail!);
+         this._tail!.setNext(newNode);
+         newNode.setPrev(this._tail!);
          this._tail = newNode;
       }
 
@@ -87,21 +61,21 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
       if (this._head === node) {
          this._head = this._head.next();
          if (this._head !== undefined) {
-            changePrev(this._head, undefined);
+            this._head.setPrev(undefined);
          } else {
             this._tail = undefined;
          }
-         disposeNode(node);
+         node.dispose();
          this._size--;
          return true;
       } else if (this._tail === node) {
          this._tail = this._tail.prev();
          if (this._tail !== undefined) {
-            changeNext(this._tail, undefined);
+            this._tail.setNext(undefined);
          } else {
             this._head = undefined;
          }
-         disposeNode(node);
+         node.dispose();
          this._size--;
          return true;
       } else {
@@ -113,9 +87,9 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
             prev.next() === node &&
             next.prev() === node
          ) {
-            changePrev(next, node.prev());
-            changeNext(prev, node.next());
-            disposeNode(node);
+            next.setPrev(node.prev());
+            prev.setNext(node.next());
+            node.dispose();
             this._size--;
             return true;
          }
@@ -136,15 +110,15 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     */
    insertAfter(afterNode: ListNode<T>, value: T): ListNode<T> {
       const newNode = new ListNode(value);
-      changeNext(newNode, afterNode.next());
-      changePrev(newNode, afterNode);
+      newNode.setNext(afterNode.next());
+      newNode.setPrev(afterNode);
       let afterNodeNext = afterNode.next();
       if (afterNodeNext) {
-         changePrev(afterNodeNext, newNode);
+         afterNodeNext.setPrev(newNode);
       } else {
          this._tail = newNode;
       }
-      changeNext(afterNode, newNode);
+      afterNode.setNext(newNode);
 
       this._size++;
 
@@ -165,17 +139,17 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
       const newNode = new ListNode(value);
 
       if (this._head === beforeNode) {
-         changeNext(newNode, this._head);
-         changePrev(this._head, newNode);
+         newNode.setNext(this._head);
+         this._head.setPrev(newNode);
          this._head = newNode;
       } else {
          const prevNode = beforeNode.prev();
          if (prevNode) {
-            changeNext(prevNode, newNode);
-            changePrev(newNode, prevNode);
+            prevNode.setNext(newNode);
+            newNode.setPrev(prevNode);
          }
-         changeNext(newNode, beforeNode);
-         changePrev(beforeNode, newNode);
+         newNode.setNext(beforeNode);
+         beforeNode.setPrev(newNode);
       }
 
       this._size++;
@@ -288,7 +262,7 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
     * @param array The array of values to convert into a linked list.
     *
     * @timeComplexity `O(n)`
-    * 
+    *
     * @returns A new linked list containing the values from the array.
     */
    static fromArray<T>(array: T[]): LinkedList<T> {
@@ -312,26 +286,81 @@ export class LinkedList<T = any> implements Iterable<ListNode<T>> {
    }
 }
 
-/*
- * Helper functions to change the next and previous nodes of a list node
- * without making typescript angry.
- */
+export class ListNode<T> {
+   public value: T;
+   private _next: ListNode<T> | undefined = undefined;
+   private _prev: ListNode<T> | undefined = undefined;
+   private _isDisposed = false;
 
-function changeNext<T>(node: ListNode<T>, next: ListNode<T> | undefined) {
-   // @ts-ignore
-   node._next = next;
-}
+   constructor(value: T) {
+      this.value = value;
+   }
 
-function changePrev<T>(node: ListNode<T>, prev: ListNode<T> | undefined) {
-   // @ts-ignore
-   node._prev = prev;
-}
+   /**
+    * Get the node after this node.
+    *
+    * @timeComplexity `O(1)`
+    *
+    * @returns A node, or undefined if this node has no next node.
+    */
+   next(): ListNode<T> | undefined {
+      return this._next;
+   }
 
-function disposeNode<T>(node: ListNode<T>) {
-   // @ts-ignore
-   node._isDisposed = true;
-   // @ts-ignore
-   node._prev = undefined;
-   // @ts-ignore
-   node._next = undefined;
+   /**
+    * Get the node before this node.
+    *
+    * @timeComplexity `O(1)`
+    *
+    * @returns A node, or undefined if this node has no previous node.
+    */
+   prev(): ListNode<T> | undefined {
+      return this._prev;
+   }
+
+   /**
+    * Check if the node is already disposed.
+    *
+    * @timeComplexity `O(1)`
+    *
+    * @returns A boolean indicating whether the node is disposed or not.
+    */
+   isDisposed(): boolean {
+      return this._isDisposed;
+   }
+
+   /**
+    * Change the next node of this node.
+    *
+    * For internal use only.
+    *
+    * @timeComplexity `O(1)`
+    */
+   setNext(next: ListNode<T> | undefined): void {
+      this._next = next;
+   }
+
+   /**
+    * Change the previous node of this node.
+    *
+    * For internal use only.
+    *
+    * @timeComplexity `O(1)`
+    */
+   setPrev(prev: ListNode<T> | undefined): void {
+      this._prev = prev;
+   }
+
+   /**
+    * Dispose this node.
+    *
+    * For internal use only.
+    *
+    * @timeComplexity `O(1)`
+    */
+   dispose(): void {
+      this._isDisposed = true;
+      this._prev = undefined;
+      this._next = undefined;
+   }
 }
