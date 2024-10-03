@@ -158,21 +158,27 @@ export class BinarySearchTree<T = number> {
 
    /**
     * Deletes values that doesn't meet the filter function condition.
-    * 
+    *
     * @param filterFunction A function that decides which values to delete.
     * It should return `false` if the value needs to be deleted,
     * otherwise `true`.
     *
     * @timeComplexity `O(n + k * log(n))` where `k` is the number of values
     * that doesn't meet the filter function condition.
+    *
+    * @returns An array of values that has been deleted.
     */
-   filter(filterFunction: (value: T) => boolean): void {
+   filter(filterFunction: (value: T) => boolean): T[] {
       let arr = this.toArray();
+      let deleted: T[] = [];
       for (let i = arr.length - 1; i >= 0; i--) {
          let value = arr[i];
          if (filterFunction(value)) continue;
          this.delete(value);
+         deleted.push(value);
       }
+
+      return deleted;
    }
 
    /**

@@ -117,16 +117,21 @@ describe("BinarySearchTree", () => {
       expect(bst.min()).toBe(1);
 
       // should not delete any
-      bst.filter((x) => x <= 100);
+      let deleted = bst.filter((x) => x <= 100);
       expect(bst.size()).toBe(100);
       expect(bst.max()).toBe(100);
       expect(bst.min()).toBe(1);
+      expect(deleted.length).toBe(0);
 
       // should delete > 75
-      bst.filter((x) => x <= 75);
+      deleted = bst.filter((x) => x <= 75);
       expect(bst.size()).toBe(75);
       expect(bst.max()).toBe(75);
       expect(bst.min()).toBe(1);
+      expect(deleted.length).toBe(25);
+      expect(deleted).toEqual(
+         expect.arrayContaining(Array.from({ length: 25 }, (x, i) => i + 76))
+      );
    });
 
    test("should clear the tree", () => {
