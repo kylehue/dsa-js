@@ -7,5 +7,5 @@ export { DisjointSet } from "./disjoint-set";
 export { Quadtree } from "./quadtree";
 export { LRUCache } from "./lru-cache";
 export { SegmentTree } from "./segment-tree";
-export { AVLTree } from "./avl-tree";
+export { BinarySearchTree } from "./binary-search-tree";
 export { IntervalTree } from "./interval-tree";

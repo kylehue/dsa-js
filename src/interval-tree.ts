@@ -1,9 +1,9 @@
-import { AVLTree, AVLTreeNode } from "./avl-tree";
+import { BinarySearchTree, BinarySearchTreeNode } from "./binary-search-tree";
 import { isOverlapping } from "./utils/common";
 
 export class IntervalTree<T = any> {
    private readonly _rangeMapper: IntervalTreeRangeMapper<T>;
-   private _tree = new AVLTree<IntervalTreeData<T>>(
+   private _tree = new BinarySearchTree<IntervalTreeData<T>>(
       (a, b) => a.lowerBound - b.lowerBound
    );
 
@@ -167,7 +167,7 @@ export class IntervalTree<T = any> {
       }
 
       function* dfs(
-         node: AVLTreeNode<IntervalTreeData<T>> | undefined
+         node: BinarySearchTreeNode<IntervalTreeData<T>> | undefined
       ): Generator<T> {
          if (node === undefined) return;
 
@@ -250,11 +250,11 @@ export class IntervalTree<T = any> {
    private *_traverseTo(data: T) {
       let value = this._rangeMapper(data)[0];
       function* dfs(
-         node: AVLTreeNode<IntervalTreeData<T>> | undefined,
-         parent: AVLTreeNode<IntervalTreeData<T>> | undefined
+         node: BinarySearchTreeNode<IntervalTreeData<T>> | undefined,
+         parent: BinarySearchTreeNode<IntervalTreeData<T>> | undefined
       ): Generator<{
-         node: AVLTreeNode<IntervalTreeData<T>>;
-         parent: AVLTreeNode<IntervalTreeData<T>> | undefined;
+         node: BinarySearchTreeNode<IntervalTreeData<T>>;
+         parent: BinarySearchTreeNode<IntervalTreeData<T>> | undefined;
       }> {
          if (node === undefined) return;
          let lowerBound = node.value().lowerBound;

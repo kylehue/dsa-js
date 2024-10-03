@@ -15,7 +15,7 @@
   - [Quadtree](#quadtree)
   - [LRUCache](#lrucache)
   - [SegmentTree](#segmenttree)
-  - [AVLTree](#avltree)
+  - [BinarySearchTree](#binarysearchtree)
   - [IntervalTree](#intervaltree)
   - [Contributing](#contributing)
 
@@ -326,44 +326,44 @@ let minTree = new SegmentTree([3, 5, 2, 7, 1], (a, b) => Math.min(a, b));
 let min = minTree.query(1, 3, Infinity); // 2
 ```
 
-## AVLTree
+## BinarySearchTree
 It's just a variant of binary search tree but with self-balancing feature which makes it more efficient.
 ```ts
-import { AVLTree } from "my-dsa";
+import { BinarySearchTree } from "my-dsa";
 
-// Create an AVLTree
-let avlTree = new AVLTree();
+// Create an BinarySearchTree
+let bst = new BinarySearchTree();
 
-// or create an AVLTree with custom comparator
-avlTree = new AVLTree((a, b) => a - b);
+// or create an BinarySearchTree with custom comparator
+bst = new BinarySearchTree((a, b) => a - b);
 
 // Insert values into the tree
-avlTree.insert(30);
+bst.insert(30);
 
 // Check the size of the tree
-let size = avlTree.size();
+let size = bst.size();
 
 // Find the minimum and maximum values
-let min = avlTree.min();
-let max = avlTree.max();
+let min = bst.min();
+let max = bst.max();
 
 // Delete a value from the tree
-avlTree.delete(20);
+bst.delete(20);
 
 // Check if the tree is empty
-let isEmpty = avlTree.isEmpty();
+let isEmpty = bst.isEmpty();
 
 // Access the root
-let root = avlTree.root();
+let root = bst.root();
 
 // Create a tree from an array
-let newTree = AVLTree.fromArray([50, 30, 70, 20, 40]);
+let newTree = BinarySearchTree.fromArray([50, 30, 70, 20, 40]);
 
 // Create a tree from a sorted array (faster)
-let newTree = AVLTree.fromSortedArray([1, 2, 3, 4]);
+let newTree = BinarySearchTree.fromSortedArray([1, 2, 3, 4]);
 
 // Loop (in-order)
-for (let value of avlTree) {
+for (let value of bst) {
    console.log(value);
 }
 ```

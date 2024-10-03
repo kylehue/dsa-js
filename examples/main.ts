@@ -4,8 +4,7 @@ import {
    Deque,
    Trie,
    DisjointSet,
-   AVLTree,
-   IntervalTree,
+   BinarySearchTree,
 } from "../src/index";
 
 const pq = new Heap<number>();
@@ -33,19 +32,19 @@ const ds = new DisjointSet<string>();
 ds.union("a", "b");
 console.log(ds.find("a"));
 
-const avlTree = new AVLTree<number>((a, b) => a - b);
-avlTree.insert(1);
-avlTree.insert(2);
-avlTree.insert(3);
-avlTree.insert(4);
-avlTree.insert(5);
-avlTree.insert(6);
-avlTree.insert(7);
-avlTree.delete(4);
-avlTree.delete(5);
-avlTree.delete(6);
-avlTree.delete(7);
-console.log(avlTree);
+const bst = new BinarySearchTree<number>((a, b) => a - b);
+bst.insert(1);
+bst.insert(2);
+bst.insert(3);
+bst.insert(4);
+bst.insert(5);
+bst.insert(6);
+bst.insert(7);
+bst.delete(4);
+bst.delete(5);
+bst.delete(6);
+bst.delete(7);
+console.log(bst);
 
 // const intervalTree = new IntervalTree<[number, number]>((x) => [x[0], x[1]]);
 // let ref: [number, number] = [30, 40];

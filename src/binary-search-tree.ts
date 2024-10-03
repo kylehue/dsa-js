@@ -1,12 +1,12 @@
 import { Comparator, defaultComparator } from "./utils/comparator";
 
-export class AVLTree<T = number> {
-   private _root: AVLTreeNode<T> | undefined = undefined;
+export class BinarySearchTree<T = number> {
+   private _root: BinarySearchTreeNode<T> | undefined = undefined;
    private _size: number = 0;
    private _comparator: Comparator<T> = defaultComparator;
 
    /**
-    * Creates a new instance of AVLTree.
+    * Creates a new instance of BinarySearchTree.
     *
     * @param comparator The comparator function to use. (Optional)
     */
@@ -22,9 +22,11 @@ export class AVLTree<T = number> {
     * @timeComplexity `O(log(n))`
     */
    insert(value: T): void {
-      const newNode = new AVLTreeNode(value);
+      const newNode = new BinarySearchTreeNode(value);
 
-      const helper = (node: AVLTreeNode<T> | undefined): AVLTreeNode<T> => {
+      const helper = (
+         node: BinarySearchTreeNode<T> | undefined
+      ): BinarySearchTreeNode<T> => {
          if (node === undefined) {
             node = newNode;
             return node;
@@ -54,12 +56,12 @@ export class AVLTree<T = number> {
     * @returns The new successor node. This can also be `undefined` if
     * the deleted node doesn't have a successor or there was no deleted node.
     */
-   delete(value: T): AVLTreeNode<T> | undefined {
-      let newSuccessor: AVLTreeNode<T> | undefined = undefined;
+   delete(value: T): BinarySearchTreeNode<T> | undefined {
+      let newSuccessor: BinarySearchTreeNode<T> | undefined = undefined;
 
       const helper = (
-         node: AVLTreeNode<T> | undefined
-      ): AVLTreeNode<T> | undefined => {
+         node: BinarySearchTreeNode<T> | undefined
+      ): BinarySearchTreeNode<T> | undefined => {
          if (node === undefined) return undefined;
 
          // If the node to delete has been found:
@@ -169,13 +171,13 @@ export class AVLTree<T = number> {
     *
     * @timeComplexity `O(n)`
     */
-   clone(): AVLTree<T> {
+   clone(): BinarySearchTree<T> {
       const cloneNode = (
-         node: AVLTreeNode<T> | undefined
-      ): AVLTreeNode<T> | undefined => {
+         node: BinarySearchTreeNode<T> | undefined
+      ): BinarySearchTreeNode<T> | undefined => {
          if (node === undefined) return undefined;
 
-         let newNode = new AVLTreeNode(node.value());
+         let newNode = new BinarySearchTreeNode(node.value());
          newNode.setLeft(cloneNode(node.left()));
          newNode.setRight(cloneNode(node.right()));
          newNode.setHeight(node.height());
@@ -183,7 +185,7 @@ export class AVLTree<T = number> {
          return newNode;
       };
 
-      const newTree = new AVLTree<T>(this._comparator);
+      const newTree = new BinarySearchTree<T>(this._comparator);
       newTree._root = cloneNode(this._root);
       newTree._size = this._size;
 
@@ -195,7 +197,7 @@ export class AVLTree<T = number> {
     *
     * @timeComplexity `O(n)`
     *
-    * @returns An array representation of the AVL tree.
+    * @returns An array representation of the tree.
     */
    toArray(): T[] {
       return [...this.values()];
@@ -266,13 +268,15 @@ export class AVLTree<T = number> {
       return this._root?.height() ?? 0;
    }
 
-   root(): AVLTreeNode<T> | undefined {
+   root(): BinarySearchTreeNode<T> | undefined {
       if (!this._root) return undefined;
       return this._root;
    }
 
    *values(): Generator<T> {
-      function* inorder(node: AVLTreeNode<T> | undefined): Generator<T> {
+      function* inorder(
+         node: BinarySearchTreeNode<T> | undefined
+      ): Generator<T> {
          if (node === undefined) return;
          yield* inorder(node.left());
          yield node.value();
@@ -287,45 +291,48 @@ export class AVLTree<T = number> {
    }
 
    /**
-    * Creates an AVLTree from an unsorted array of elements.
+    * Creates an BinarySearchTree from an unsorted array of elements.
     *
     * @param array The array of elements to insert into the tree.
     * @param comparator The comparator function to use. (Optional)
     *
     * @timeComplexity `O(n * log(n))`
     *
-    * @returns A new instance of AVLTree.
+    * @returns A new instance of BinarySearchTree.
     */
-   static fromArray<T>(array: T[], comparator?: Comparator<T>): AVLTree<T> {
-      const avlTree = new AVLTree<T>(comparator);
-      array.forEach((data) => avlTree.insert(data));
-      return avlTree;
+   static fromArray<T>(
+      array: T[],
+      comparator?: Comparator<T>
+   ): BinarySearchTree<T> {
+      const bst = new BinarySearchTree<T>(comparator);
+      array.forEach((data) => bst.insert(data));
+      return bst;
    }
 
    /**
-    * Creates an AVLTree from a sorted array of elements.
+    * Creates an BinarySearchTree from a sorted array of elements.
     *
     * @param array The array of elements to insert into the tree.
     * @param comparator The comparator function to use. (Optional)
     *
     * @timeComplexity `O(n)`
     *
-    * @returns A new instance of AVLTree.
+    * @returns A new instance of BinarySearchTree.
     */
    static fromSortedArray<T>(
       array: T[],
       comparator?: Comparator<T>
-   ): AVLTree<T> {
-      const avlTree = new AVLTree<T>(comparator);
+   ): BinarySearchTree<T> {
+      const bst = new BinarySearchTree<T>(comparator);
 
       const helper = (
          left: number,
          right: number
-      ): AVLTreeNode<T> | undefined => {
+      ): BinarySearchTreeNode<T> | undefined => {
          if (left > right) return undefined;
 
          let mid = (left + right) >> 1;
-         let root = new AVLTreeNode(array[mid]);
+         let root = new BinarySearchTreeNode(array[mid]);
          root.setLeft(helper(left, mid - 1));
          root.setRight(helper(mid + 1, right));
          root.updateHeight();
@@ -333,17 +340,17 @@ export class AVLTree<T = number> {
          return root;
       };
 
-      avlTree._root = helper(0, array.length - 1);
-      avlTree._size = array.length;
+      bst._root = helper(0, array.length - 1);
+      bst._size = array.length;
 
-      return avlTree;
+      return bst;
    }
 }
 
-export class AVLTreeNode<T> {
+export class BinarySearchTreeNode<T> {
    private _value: T;
-   private _left: AVLTreeNode<T> | undefined = undefined;
-   private _right: AVLTreeNode<T> | undefined = undefined;
+   private _left: BinarySearchTreeNode<T> | undefined = undefined;
+   private _right: BinarySearchTreeNode<T> | undefined = undefined;
    private _height: number = 1;
 
    constructor(value: T) {
@@ -353,14 +360,14 @@ export class AVLTreeNode<T> {
    /**
     * Get the left child of the node.
     */
-   left(): AVLTreeNode<T> | undefined {
+   left(): BinarySearchTreeNode<T> | undefined {
       return this._left;
    }
 
    /**
     * Get the right child of the node.
     */
-   right(): AVLTreeNode<T> | undefined {
+   right(): BinarySearchTreeNode<T> | undefined {
       return this._right;
    }
 
@@ -383,7 +390,7 @@ export class AVLTreeNode<T> {
     *
     * For internal use only.
     */
-   setLeft(node: AVLTreeNode<T> | undefined): void {
+   setLeft(node: BinarySearchTreeNode<T> | undefined): void {
       this._left = node;
    }
 
@@ -392,7 +399,7 @@ export class AVLTreeNode<T> {
     *
     * For internal use only.
     */
-   setRight(node: AVLTreeNode<T> | undefined): void {
+   setRight(node: BinarySearchTreeNode<T> | undefined): void {
       this._right = node;
    }
 
@@ -422,7 +429,7 @@ export class AVLTreeNode<T> {
     *
     * @returns The new successor.
     */
-   rotateLeft(): AVLTreeNode<T> {
+   rotateLeft(): BinarySearchTreeNode<T> {
       let right = this._right;
       if (right === undefined) return this;
 
@@ -442,7 +449,7 @@ export class AVLTreeNode<T> {
     *
     * @returns The new successor.
     */
-   rotateRight(): AVLTreeNode<T> {
+   rotateRight(): BinarySearchTreeNode<T> {
       let left = this._left;
       if (left === undefined) return this;
 
@@ -475,7 +482,7 @@ export class AVLTreeNode<T> {
     *
     * @returns The new successor.
     */
-   balance(): AVLTreeNode<T> {
+   balance(): BinarySearchTreeNode<T> {
       // Update height
       this.updateHeight();
 
@@ -508,5 +515,3 @@ export class AVLTreeNode<T> {
       return this;
    }
 }
-
-export type AVLTreeValueMapper<T> = (data: T) => number;
