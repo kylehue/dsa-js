@@ -54,6 +54,67 @@ export class IntervalTree<T = any> {
    }
 
    /**
+    * Deletes values that doesn't meet the filter function condition.
+    *
+    * @param filterFunction A function that decides which values to delete.
+    * It should return `false` if the value needs to be deleted,
+    * otherwise `true`.
+    *
+    * @timeComplexity `O(n + k * log(n))` where `k` is the number of values
+    * that doesn't meet the filter function condition.
+    *
+    * @retuns An array of intervals that has been deleted.
+    */
+   filter(filterFunction: (value: T) => boolean): T[] {
+      // Convert to array
+      let arr: IntervalTreeData<T>[] = [];
+      function dfs(
+         node: BinarySearchTreeNode<IntervalTreeData<T>> | undefined
+      ) {
+         if (node === undefined) return;
+         arr.push(node.value());
+         dfs(node.left());
+         dfs(node.right());
+      }
+      dfs(this._tree.root());
+
+      // Delete
+      let deleted: T[] = [];
+      for (let intervalData of arr) {
+         if (filterFunction(intervalData.data)) continue;
+         this.delete(intervalData.data);
+         deleted.push(intervalData.data);
+      }
+
+      return deleted;
+   }
+
+   /**
+    * Deletes values that overlap within provded range.
+    *
+    * @param lower The lower bound of the range.
+    * @param upper The upper bound of the range.
+    * @param inclusive Set to `true` to include intervals that doesn't
+    * overlap but touch the given lower or upper bound. Default is `false`.
+    *
+    * @timeComplexity `O(n + k * log(n))` where `k` is the number of values
+    * that is getting deleted.
+    *
+    * @retuns An array of intervals that has been deleted.
+    */
+   deleteInRange(lower: number, upper: number, inclusive?: boolean): T[] {
+      return this.filter((x) => {
+         let [lowerBound, upperBound] = this._rangeMapper(x);
+         let isOverlappingInclusive =
+            inclusive && (lowerBound === upper || upperBound === lower);
+         return !(
+            isOverlappingInclusive ||
+            isOverlapping(lower, upper, lowerBound, upperBound)
+         );
+      });
+   }
+
+   /**
     * Queries all intervals that overlap with the provided range.
     *
     * @param lower The lower bound of the range.

@@ -177,4 +177,80 @@ describe("IntervalTree", () => {
       expect(result.length).toBeGreaterThan(0);
       expect(result.length).toBe(500);
    });
+
+   it("should filter out intervals based on the filter function", () => {
+      const deleted = tree.filter((data) => data.interval[0] >= 10);
+      const remainingIntervals = [...tree.values()];
+      const remainingNames = remainingIntervals.map((obj) => obj.name);
+      expect(remainingNames).toEqual(
+         expect.arrayContaining(["B", "C", "D", "E"])
+      );
+      expect(deleted.length).toEqual(2);
+      expect(remainingNames).not.toContain("A");
+      expect(remainingNames).not.toContain("F");
+   });
+
+   it("should retain intervals where the upper bound is less than or equal to 20", () => {
+      tree.filter((data) => data.interval[1] <= 20);
+      const remainingIntervals = [...tree.values()];
+      const remainingNames = remainingIntervals.map((obj) => obj.name);
+      expect(remainingNames).toEqual(
+         expect.arrayContaining(["A", "B", "D", "F"])
+      );
+      expect(remainingNames).not.toContain("C");
+      expect(remainingNames).not.toContain("E");
+   });
+
+   it("should remove all intervals if the filter function returns false for all", () => {
+      tree.filter(() => false);
+      expect(tree.isEmpty()).toBe(true);
+      expect(tree.size()).toBe(0);
+   });
+
+   it("should retain all intervals if the filter function returns true for all", () => {
+      const deleted = tree.filter(() => true);
+      expect(deleted.length).toEqual(0);
+      const remainingIntervals = [...tree.values()];
+      expect(remainingIntervals.length).toBe(sampleData.length);
+   });
+
+   it("should correctly filter intervals based on a custom condition", () => {
+      tree.filter((data) => data.name === "B" || data.name === "E");
+      const remainingIntervals = [...tree.values()];
+      const remainingNames = remainingIntervals.map((obj) => obj.name);
+      expect(remainingNames).toEqual(expect.arrayContaining(["B", "E"]));
+      expect(remainingNames).not.toContain("A");
+      expect(remainingNames).not.toContain("C");
+      expect(remainingNames).not.toContain("D");
+      expect(remainingNames).not.toContain("F");
+   });
+
+   it("should delete intervals within a range", () => {
+      const result = tree.deleteInRange(10, 18);
+      expect(result.length).toBe(2);
+      expect(tree.size()).toBe(sampleData.length - 2);
+
+      const remaining = tree.query(10, 18);
+      const names = remaining.map((obj) => obj.name);
+      expect(names).not.toContain("B");
+      expect(names).not.toContain("D");
+   });
+
+   it("should handle inclusive range deletion", () => {
+      const result = tree.deleteInRange(5, 10, true);
+      expect(result.length).toBe(3);
+      expect(tree.size()).toBe(sampleData.length - 3);
+
+      const remaining = tree.query(5, 10);
+      const names = remaining.map((obj) => obj.name);
+      expect(names).not.toContain("A");
+      expect(names).not.toContain("B");
+      expect(names).not.toContain("F");
+   });
+
+   it("should delete no intervals if no overlap", () => {
+      const result = tree.deleteInRange(40, 50);
+      expect(result.length).toBe(0);
+      expect(tree.size()).toBe(sampleData.length);
+   });
 });
