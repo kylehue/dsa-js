@@ -350,6 +350,9 @@ let max = bst.max();
 // Delete a value from the tree
 bst.delete(20);
 
+// Filter the tree
+bst.filter((x) => x > 20);
+
 // Check if the tree is empty
 let isEmpty = bst.isEmpty();
 
@@ -393,6 +396,12 @@ let size = intervalTree.size();
 
 // Delete an interval from the tree
 intervalTree.delete(sampleData);
+
+// Filter the tree
+intervalTree.filter((x) => x > 20);
+
+// Delete intervals that overlap within range
+intervalTree.deleteInRange(5, 10);
 
 // Check if the tree is empty
 let isEmpty = intervalTree.isEmpty();
