@@ -90,7 +90,7 @@ export class IntervalTree<T = any> {
    }
 
    /**
-    * Deletes values that overlap within provded range.
+    * Deletes values that overlap within provided range.
     *
     * @param lower The lower bound of the range.
     * @param upper The upper bound of the range.
@@ -148,14 +148,14 @@ export class IntervalTree<T = any> {
     * @returns True if any interval overlaps with the given range,
     * otherwise false.
     */
-   hasOverlap(lower: number, upper: number): boolean {
+   hasOverlap(lower: number, upper: number, inclusive?: boolean): boolean {
       if (lower > upper) {
          throw new RangeError(
             "Lower bound must be less than the higher bound."
          );
       }
 
-      for (let _ of this.rangeQuery(lower, upper)) return true;
+      for (let _ of this.rangeQuery(lower, upper, inclusive)) return true;
       return false;
    }
 
