@@ -327,14 +327,14 @@ let min = minTree.query(1, 3, Infinity); // 2
 ```
 
 ## BinarySearchTree
-It's just a variant of binary search tree but with self-balancing feature which makes it more efficient.
+A binary search tree allows for efficient searching, insertion, and deletion of elements. This is an implementation of [AVLTree](https://en.wikipedia.org/wiki/AVL_tree), or self-balancing binary search tree.
 ```ts
 import { BinarySearchTree } from "my-dsa";
 
-// Create an BinarySearchTree
+// Create a binary search tree
 let bst = new BinarySearchTree();
 
-// or create an BinarySearchTree with custom comparator
+// or create a binary search tree with custom comparator
 bst = new BinarySearchTree((a, b) => a - b);
 
 // Insert values into the tree
@@ -398,7 +398,7 @@ let size = intervalTree.size();
 intervalTree.delete(sampleData);
 
 // Filter the tree
-intervalTree.filter((x) => x > 20);
+intervalTree.filter((x) => x[0] > 20);
 
 // Delete intervals that overlap within range
 intervalTree.deleteInRange(5, 10);
