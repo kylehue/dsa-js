@@ -33,7 +33,7 @@ const ds = new DisjointSet<string>();
 ds.union("a", "b");
 console.log(ds.find("a"));
 
-const avlTree = new AVLTree<number>((x) => x);
+const avlTree = new AVLTree<number>((a, b) => a - b);
 avlTree.insert(1);
 avlTree.insert(2);
 avlTree.insert(3);
@@ -41,18 +41,21 @@ avlTree.insert(4);
 avlTree.insert(5);
 avlTree.insert(6);
 avlTree.insert(7);
-
+avlTree.delete(4);
+avlTree.delete(5);
+avlTree.delete(6);
+avlTree.delete(7);
 console.log(avlTree);
 
-const intervalTree = new IntervalTree<[number, number]>((x) => [x[0], x[1]]);
-let ref: [number, number] = [30, 40];
-intervalTree.insert([15, 20]);
-intervalTree.insert([10, 30]);
-intervalTree.insert([5, 20]);
-intervalTree.insert([12, 15]);
-intervalTree.insert([17, 19]);
-intervalTree.insert(ref);
+// const intervalTree = new IntervalTree<[number, number]>((x) => [x[0], x[1]]);
+// let ref: [number, number] = [30, 40];
+// intervalTree.insert([15, 20]);
+// intervalTree.insert([10, 30]);
+// intervalTree.insert([5, 20]);
+// intervalTree.insert([12, 15]);
+// intervalTree.insert([17, 19]);
+// intervalTree.insert(ref);
 
-intervalTree.delete(ref);
+// intervalTree.delete(ref);
 
-console.log(intervalTree, [...intervalTree.rangeQuery(15, 31)]);
+// console.log(intervalTree, [...intervalTree.rangeQuery(15, 31)]);

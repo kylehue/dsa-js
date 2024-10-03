@@ -31,13 +31,13 @@ export class AVLTree<T = number> {
          }
 
          if (this._comparator(value, node.value()) < 0) {
-            changeLeft(node, helper(node.left()));
+            node.setLeft(helper(node.left()));
          } else {
-            changeRight(node, helper(node.right()));
+            node.setRight(helper(node.right()));
          }
 
          // Rebalance
-         return this._balance(node);
+         return node.balance();
       };
 
       this._size++;
@@ -79,15 +79,47 @@ export class AVLTree<T = number> {
                   successor = successor.left()!;
                }
 
-               changeLeft(successor, left);
-               if (successor === right) {
-                  changeRight(right, right.right());
-               } else {
-                  changeRight(successor, right);
+               // Set left and right of the new successor to the left and
+               // right of the node that is getting deleted.
+               // Setting the left is easy and straightforward but setting
+               // the right child has a condition:
+
+               // Here, we're gonna delete 5:
+               //       5
+               //     /   \
+               //    2     6
+               //   / \     \
+               //  1   3     7
+
+               // It becomes:
+               //       6
+               //     /   \
+               //    2     7    <-- right must stay!
+               //   / \
+               //  1   3
+               successor.setLeft(left);
+               if (successor !== right) {
+                  successor.setRight(right);
                }
 
+               // Remove successor's parent reference to its left child,
+               // that is if the left child exists.
+               // For example:
+               // Here, we're gonna delete 4:
+               //       4
+               //     /   \
+               //    2     6
+               //   / \   / \
+               //  1   3 5   7
+
+               //       5
+               //     /   \
+               //    2     6    <-- remove reference to 5
+               //   / \     \
+               //  1   3     7
+
                if (successorParent) {
-                  changeLeft(successorParent, undefined);
+                  successorParent.setLeft(undefined);
                }
 
                newSuccessor = successor;
@@ -100,21 +132,21 @@ export class AVLTree<T = number> {
             }
 
             // Dettach the node
-            changeLeft(node, undefined);
-            changeRight(node, undefined);
+            node.setLeft(undefined);
+            node.setRight(undefined);
 
             // Return new successor
-            return newSuccessor ? this._balance(newSuccessor) : newSuccessor;
+            return newSuccessor?.balance();
          }
 
          // If node hasn't been found, recursively find the node to delete
          else if (this._comparator(value, node.value()) < 0) {
-            changeLeft(node, helper(node.left()));
+            node.setLeft(helper(node.left()));
          } else {
-            changeRight(node, helper(node.right()));
+            node.setRight(helper(node.right()));
          }
 
-         return this._balance(node);
+         return node.balance();
       };
 
       this._root = helper(this._root);
@@ -152,11 +184,10 @@ export class AVLTree<T = number> {
       ): AVLTreeNode<T> | undefined => {
          if (node === undefined) return undefined;
 
-         const newNode = new AVLTreeNode(node.value());
-
-         changeLeft(newNode, cloneNode(node.left()));
-         changeRight(newNode, cloneNode(node.right()));
-         changeHeight(newNode, node.height());
+         let newNode = new AVLTreeNode(node.value());
+         newNode.setLeft(cloneNode(node.left()));
+         newNode.setRight(cloneNode(node.right()));
+         newNode.setHeight(node.height());
 
          return newNode;
       };
@@ -241,7 +272,7 @@ export class AVLTree<T = number> {
     * @returns The height of the tree.
     */
    height(): number {
-      return this._getHeight(this._root);
+      return this._root?.height() ?? 0;
    }
 
    root(): AVLTreeNode<T> | undefined {
@@ -304,9 +335,9 @@ export class AVLTree<T = number> {
 
          let mid = (left + right) >> 1;
          let root = new AVLTreeNode(array[mid]);
-         changeLeft(root, helper(left, mid - 1));
-         changeRight(root, helper(mid + 1, right));
-         changeHeight(root, 1 + avlTree._calculateHeight(root));
+         root.setLeft(helper(left, mid - 1));
+         root.setRight(helper(mid + 1, right));
+         root.updateHeight();
 
          return root;
       };
@@ -315,83 +346,6 @@ export class AVLTree<T = number> {
       avlTree._size = array.length;
 
       return avlTree;
-   }
-
-   private _balance(node: AVLTreeNode<T>): AVLTreeNode<T> {
-      let factor = this._getBalanceFactor(node);
-
-      // Update height and rebalance
-      changeHeight(node, 1 + this._calculateHeight(node));
-
-      // Left-heavy
-      if (factor > 1) {
-         // If the left child is right-heavy,
-         // then we have to rotate the left child to the left.
-         let left = node.left();
-         if (left !== undefined && this._getBalanceFactor(left) < 0) {
-            changeLeft(node, this._rotateLeft(left));
-         }
-
-         return this._rotateRight(node);
-      }
-
-      // Right-heavy
-      else if (factor < -1) {
-         // If the right child if left-heavy,
-         // then we have to rotate the right child to the right.
-         let right = node.right();
-         if (right !== undefined && this._getBalanceFactor(right) > 0) {
-            changeRight(node, this._rotateRight(right!));
-         }
-
-         return this._rotateLeft(node);
-      }
-
-      return node;
-   }
-
-   private _rotateLeft(node: AVLTreeNode<T>): AVLTreeNode<T> {
-      let right = node.right();
-      if (right === undefined) return node;
-
-      changeRight(node, right.left());
-      changeLeft(right, node);
-
-      changeHeight(node, 1 + this._calculateHeight(node));
-      changeHeight(right, 1 + this._calculateHeight(right));
-
-      return right;
-   }
-
-   private _rotateRight(node: AVLTreeNode<T>): AVLTreeNode<T> {
-      let left = node.left();
-      if (left === undefined) return node;
-
-      changeLeft(node, left.right());
-      changeRight(left, node);
-
-      changeHeight(node, 1 + this._calculateHeight(node));
-      changeHeight(left, 1 + this._calculateHeight(left));
-
-      return left;
-   }
-
-   private _getBalanceFactor(node: AVLTreeNode<T> | undefined): number {
-      if (node === undefined) return 0;
-      return this._getHeight(node.left()) - this._getHeight(node.right());
-   }
-
-   private _calculateHeight(node: AVLTreeNode<T> | undefined): number {
-      if (node === undefined) return 0;
-      return Math.max(
-         this._getHeight(node.left()),
-         this._getHeight(node.right())
-      );
-   }
-
-   private _getHeight(node: AVLTreeNode<T> | undefined): number {
-      if (node === undefined) return 0;
-      return node.height();
    }
 }
 
@@ -405,48 +359,163 @@ export class AVLTreeNode<T> {
       this._value = value;
    }
 
+   /**
+    * Get the left child of the node.
+    */
    left(): AVLTreeNode<T> | undefined {
       return this._left;
    }
 
+   /**
+    * Get the right child of the node.
+    */
    right(): AVLTreeNode<T> | undefined {
       return this._right;
    }
 
+   /**
+    * Get the value of the node.
+    */
    value(): T {
       return this._value;
    }
 
+   /**
+    * Get the height of the node.
+    */
    height(): number {
       return this._height;
+   }
+
+   /**
+    * Change the left child of the node.
+    *
+    * For internal use only.
+    */
+   setLeft(node: AVLTreeNode<T> | undefined): void {
+      this._left = node;
+   }
+
+   /**
+    * Change the right child of the node.
+    *
+    * For internal use only.
+    */
+   setRight(node: AVLTreeNode<T> | undefined): void {
+      this._right = node;
+   }
+
+   /**
+    * Change the height of the node.
+    *
+    * For internal use only.
+    */
+   setHeight(height: number): void {
+      this._height = height;
+   }
+
+   /**
+    * Updates the height of the node.
+    *
+    * For internal use only.
+    */
+   updateHeight(): void {
+      this._height =
+         1 + Math.max(this._left?._height ?? 0, this._right?._height ?? 0);
+   }
+
+   /**
+    * Rotates the node to the left.
+    *
+    * For internal use only.
+    *
+    * @returns The new successor.
+    */
+   rotateLeft(): AVLTreeNode<T> {
+      let right = this._right;
+      if (right === undefined) return this;
+
+      this._right = right._left;
+      right._left = this;
+
+      this.updateHeight();
+      right.updateHeight();
+
+      return right;
+   }
+
+   /**
+    * Rotates the node to the right.
+    *
+    * For internal use only.
+    *
+    * @returns The new successor.
+    */
+   rotateRight(): AVLTreeNode<T> {
+      let left = this._left;
+      if (left === undefined) return this;
+
+      this._left = left._right;
+      left._right = this;
+
+      this.updateHeight();
+      left.updateHeight();
+
+      return left;
+   }
+
+   /**
+    * Compute the balance factor of the node.
+    *
+    * For internal use only.
+    *
+    * @returns The balance factor.
+    */
+   computeBalanceFactor(): number {
+      let leftHeight = this._left?._height ?? 0;
+      let rightHeight = this._right?._height ?? 0;
+      return leftHeight - rightHeight;
+   }
+
+   /**
+    * Balances the node.
+    *
+    * For internal use only.
+    *
+    * @returns The new successor.
+    */
+   balance(): AVLTreeNode<T> {
+      // Update height
+      this.updateHeight();
+
+      let factor = this.computeBalanceFactor();
+
+      // Left-heavy
+      if (factor > 1) {
+         // If the left child is right-heavy,
+         // then we have to rotate the left child to the left.
+         let left = this.left();
+         if (left !== undefined && left.computeBalanceFactor() < 0) {
+            this.setLeft(left.rotateLeft());
+         }
+
+         return this.rotateRight();
+      }
+
+      // Right-heavy
+      else if (factor < -1) {
+         // If the right child if left-heavy,
+         // then we have to rotate the right child to the right.
+         let right = this.right();
+         if (right !== undefined && right.computeBalanceFactor() > 0) {
+            this.setRight(right.rotateRight());
+         }
+
+         return this.rotateLeft();
+      }
+
+      return this;
    }
 }
 
 export type AVLTreeValueMapper<T> = (data: T) => number;
-
-/*
- * Helper functions to change node properties without making typescript mad.
- */
-
-function changeLeft<T>(node: AVLTreeNode<T>, left: AVLTreeNode<T> | undefined) {
-   // @ts-ignore
-   node._left = left;
-}
-
-function changeRight<T>(
-   node: AVLTreeNode<T>,
-   right: AVLTreeNode<T> | undefined
-) {
-   // @ts-ignore
-   node._right = right;
-}
-
-function changeHeight<T>(node: AVLTreeNode<T>, height: number) {
-   // @ts-ignore
-   node._height = height;
-}
-
-function changeValue<T>(node: AVLTreeNode<T>, value: T) {
-   // @ts-ignore
-   node._value = value;
-}
