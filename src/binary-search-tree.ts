@@ -83,8 +83,8 @@ export class BinarySearchTree<T = number> {
 
                // Set left and right of the new successor to the left and
                // right of the node that is getting deleted.
-               // Setting the left is easy and straightforward but setting
-               // the right child has a condition:
+               // Setting the left is straightforward but setting the right
+               // child has a condition:
 
                // Here, we're gonna delete 5:
                //       5
@@ -154,6 +154,25 @@ export class BinarySearchTree<T = number> {
       this._root = helper(this._root);
 
       return newSuccessor;
+   }
+
+   /**
+    * Deletes values that doesn't meet the filter function condition.
+    * 
+    * @param filterFunction A function that decides which values to delete.
+    * It should return `false` if the value needs to be deleted,
+    * otherwise `true`.
+    *
+    * @timeComplexity `O(n + k * log(n))` where `k` is the number of values
+    * that doesn't meet the filter function condition.
+    */
+   filter(filterFunction: (value: T) => boolean): void {
+      let arr = this.toArray();
+      for (let i = arr.length - 1; i >= 0; i--) {
+         let value = arr[i];
+         if (filterFunction(value)) continue;
+         this.delete(value);
+      }
    }
 
    /**
@@ -359,6 +378,8 @@ export class BinarySearchTreeNode<T> {
 
    /**
     * Get the left child of the node.
+    *
+    * @timeComplexity `O(1)`
     */
    left(): BinarySearchTreeNode<T> | undefined {
       return this._left;
@@ -366,6 +387,8 @@ export class BinarySearchTreeNode<T> {
 
    /**
     * Get the right child of the node.
+    *
+    * @timeComplexity `O(1)`
     */
    right(): BinarySearchTreeNode<T> | undefined {
       return this._right;
@@ -373,6 +396,8 @@ export class BinarySearchTreeNode<T> {
 
    /**
     * Get the value of the node.
+    *
+    * @timeComplexity `O(1)`
     */
    value(): T {
       return this._value;
@@ -380,6 +405,8 @@ export class BinarySearchTreeNode<T> {
 
    /**
     * Get the height of the node.
+    *
+    * @timeComplexity `O(1)`
     */
    height(): number {
       return this._height;
@@ -389,6 +416,8 @@ export class BinarySearchTreeNode<T> {
     * Change the left child of the node.
     *
     * For internal use only.
+    *
+    * @timeComplexity `O(1)`
     */
    setLeft(node: BinarySearchTreeNode<T> | undefined): void {
       this._left = node;
@@ -398,6 +427,8 @@ export class BinarySearchTreeNode<T> {
     * Change the right child of the node.
     *
     * For internal use only.
+    *
+    * @timeComplexity `O(1)`
     */
    setRight(node: BinarySearchTreeNode<T> | undefined): void {
       this._right = node;
@@ -407,6 +438,8 @@ export class BinarySearchTreeNode<T> {
     * Change the height of the node.
     *
     * For internal use only.
+    *
+    * @timeComplexity `O(1)`
     */
    setHeight(height: number): void {
       this._height = height;
@@ -416,6 +449,8 @@ export class BinarySearchTreeNode<T> {
     * Updates the height of the node.
     *
     * For internal use only.
+    *
+    * @timeComplexity `O(1)`
     */
    updateHeight(): void {
       this._height =
@@ -426,6 +461,8 @@ export class BinarySearchTreeNode<T> {
     * Rotates the node to the left.
     *
     * For internal use only.
+    *
+    * @timeComplexity `O(1)`
     *
     * @returns The new successor.
     */
@@ -447,6 +484,8 @@ export class BinarySearchTreeNode<T> {
     *
     * For internal use only.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The new successor.
     */
    rotateRight(): BinarySearchTreeNode<T> {
@@ -467,6 +506,8 @@ export class BinarySearchTreeNode<T> {
     *
     * For internal use only.
     *
+    * @timeComplexity `O(1)`
+    *
     * @returns The balance factor.
     */
    computeBalanceFactor(): number {
@@ -479,6 +520,8 @@ export class BinarySearchTreeNode<T> {
     * Balances the node.
     *
     * For internal use only.
+    *
+    * @timeComplexity `O(1)`
     *
     * @returns The new successor.
     */

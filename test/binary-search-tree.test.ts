@@ -108,7 +108,7 @@ describe("BinarySearchTree", () => {
       expect(bst.root()!.right()!.value()).toBe(3);
    });
 
-   test.todo("should filter", () => {
+   test("should filter", () => {
       for (let i = 1; i <= 100; i++) {
          bst.insert(i);
       }
@@ -203,18 +203,15 @@ describe("BinarySearchTree", () => {
       expect(bst.height()).toBe(1);
    });
 
-   test.todo(
-      "should maintain size when inserting and deleting duplicate values",
-      () => {
-         bst.insert(10);
-         bst.insert(10);
-         bst.insert(10);
-         expect(bst.size()).toBe(3);
+   test("should maintain size when inserting and deleting duplicate values", () => {
+      bst.insert(10);
+      bst.insert(10);
+      bst.insert(10);
+      expect(bst.size()).toBe(3);
 
-         bst.delete(10);
-         expect(bst.size()).toBe(2);
-      }
-   );
+      bst.delete(10);
+      expect(bst.size()).toBe(2);
+   });
 
    test("should handle large dataset efficiently", () => {
       const largeDataset = Array.from({ length: 1000 }, (_, i) => i + 1);
